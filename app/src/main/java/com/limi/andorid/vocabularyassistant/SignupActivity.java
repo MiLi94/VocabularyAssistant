@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,14 +15,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.*;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.limi.andorid.vocabularyassistant.app.AppConfig;
+import com.limi.andorid.vocabularyassistant.app.AppController;
+import com.limi.andorid.vocabularyassistant.helper.CharsetStingRequest;
+import com.limi.andorid.vocabularyassistant.helper.SQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.SessionManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignupActivity extends AppCompatActivity {
 
+    private static final String TAG = SignupActivity.class.getSimpleName();
     private EditText nameView;
     private EditText email;
     private EditText password;
     private AppCompatButton signupButton;
     private SharedPreferences sp;
-    private Intent intent;
+    private ProgressDialog pDialog;
+    private SessionManager session;
+    private SQLiteHandler db;
 
 
     @Override
@@ -35,53 +54,77 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = (AppCompatButton) findViewById(R.id.btn_sign_up);
         TextView loginView = (TextView) findViewById(R.id.link_login);
 
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        pDialog = new ProgressDialog(SignupActivity.this,R.style.AppTheme_Dialog);
+        pDialog.setCancelable(false);
 
+        // Session manager
+        session = new SessionManager(getApplicationContext());
+
+
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(SignupActivity.this,
+                    MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                singup_check();
+                signup_check();
             }
         });
 
         loginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        LoginActivity.class);
+                startActivity(i);
                 finish();
             }
         });
 
     }
 
-    public void singup_check() {
+    public void signup_check() {
 //        Account a1 = new Account("abc@abc.com", "123456");
 
-        if (check_validation()) {
-            final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                    R.style.AppTheme_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Saving...");
-            progressDialog.show();
+        final String nameText= nameView.getText().toString().trim();
+        final String emailText = email.getText().toString().trim();
+        final String passwordText = password.getText().toString().trim();
+        registerUser(nameText,emailText,passwordText);
+//        if (check_validation(nameText,emailText,passwordText)) {
+//            authenticate(nameText,emailText, passwordText);
+//            final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+//                    R.style.AppTheme_Dialog);
+//            progressDialog.setIndeterminate(true);
+//            progressDialog.setMessage("Saving...");
+//            progressDialog.show();
 
             // TODO: Implement your own authentication logic here.
-            new android.os.Handler().postDelayed(
-                    new Runnable() {
-                        public void run() {
-                            // On complete call either onLoginSuccess or onLoginFailed
-                            if (authenticate())
-                                signup_success();
-                            else
-                                signup_fail();
-                            progressDialog.dismiss();
-                        }
-                    }, 3000);
-        } else {
-            signup_fail();
+//            new android.os.Handler().postDelayed(
+//                    new Runnable() {
+//                        public void run() {
+//                            // On complete call either onLoginSuccess or onLoginFailed
+//                            if (authenticate(nameText,emailText, passwordText))
+//                                signup_success();
+//                            else
+//                                signup_fail();
+//                            progressDialog.dismiss();
+//                        }
+//                    }, 300);
+//        } else {
+//            signup_fail();
 
-        }
+//        }
     }
 
     private void signup_success() {
-        Toast.makeText(getBaseContext(), "Sign up successed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Sign up succeed", Toast.LENGTH_LONG).show();
         signupButton.setEnabled(true);
         finish();
     }
@@ -91,22 +134,20 @@ public class SignupActivity extends AppCompatActivity {
         signupButton.setEnabled(true);
     }
 
-    public boolean check_validation() {
+    public boolean check_validation(final String nameText, final String emailText, final String passwordText) {
         boolean validation;
 
-        String nameText=nameView.getText().toString();
-        String emailText = email.getText().toString();
-        String passwordText = password.getText().toString();
+
 
         if (TextUtils.isEmpty(nameText)) {
-            email.setError(getString(R.string.error_field_required));
+            this.nameView.setError(getString(R.string.error_field_required));
             validation = false;
 
-        } else if (validateName(nameText)) {
-            email.setError(getString(R.string.error_invalid_name));
+        } else if (!validateName(nameText)) {
+            this.nameView.setError(getString(R.string.error_invalid_name));
             validation = false;
         } else {
-            email.setError(null);
+            this.nameView.setError(null);
             validation = true;
         }
 
@@ -118,20 +159,20 @@ public class SignupActivity extends AppCompatActivity {
 
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             email.setError(getString(R.string.error_invalid_email));
-            validation = false;
+            validation &= false;
         } else {
             email.setError(null);
-            validation = true;
+            validation &= true;
         }
 
 
         if (passwordText.isEmpty() || password.length() < 6 || password.length() > 16) {
             password.setError(getString(R.string.error_password_length));
 
-            validation = false;
+            validation &= false;
         } else {
             password.setError(null);
-            validation = true;
+            validation &= true;
         }
 
 
@@ -139,17 +180,173 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    public boolean authenticate() {
-        String emailText = email.getText().toString();
-        String passwordText = password.getText().toString();
-        return (emailText.equalsIgnoreCase("aaa@aaa.com")&&passwordText.equals("123456"));
+    public void authenticate(final String nameText, final String emailText, final String passwordText) {
+        //exist or not
+        String tag_string_req = "req_register";
+        
+        pDialog.setMessage("Registering ...");
+        showDialog();
+
+        CharsetStingRequest strReq = new CharsetStingRequest(Request.Method.POST,
+                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+                        String uid = jObj.getString("uid");
+
+                        JSONObject user = jObj.getJSONObject("user");
+                        String name = user.getString("name");
+                        String email = user.getString("email");
+                        String created_at = user
+                                .getString("created_at");
+
+                        // Inserting row in users table
+                        db.addUser(name, email, uid, created_at);
+
+                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+
+                        // Launch login activity
+                        Intent intent = new Intent(
+                                SignupActivity.this,
+                                LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", nameText);
+                params.put("email", emailText);
+                params.put("password", passwordText);
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
     }
 
+    private void registerUser(final String name, final String email,
+                              final String password) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+        pDialog.setMessage("Registering ...");
+        showDialog();
+
+        CharsetStingRequest strReq = new CharsetStingRequest(Request.Method.POST,
+                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+                        String uid = jObj.getString("uid");
+
+                        JSONObject user = jObj.getJSONObject("user");
+                        String name = user.getString("name");
+                        String email = user.getString("email");
+                        String created_at = user
+                                .getString("created_at");
+
+                        // Inserting row in users table
+                        db.addUser(name, email, uid, created_at);
+
+                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+
+                        // Launch login activity
+                        Intent intent = new Intent(
+                                SignupActivity.this,
+                                LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", name);
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
     public boolean validateName(String s){
         char name[]=s.toCharArray();
         for (char c:name ){
-            if(!(c<='a'&&c>='Z')||(c==' ')) {
+            if(!((c>='A'&&c<='z')||(c==' '))) {
                 return false;
             }
         }
@@ -178,10 +375,14 @@ public class SignupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
     }
 
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
 }
