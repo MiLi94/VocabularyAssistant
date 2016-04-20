@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.*;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.limi.andorid.vocabularyassistant.app.AppConfig;
@@ -54,7 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = (AppCompatButton) findViewById(R.id.btn_sign_up);
         TextView loginView = (TextView) findViewById(R.id.link_login);
 
-        pDialog = new ProgressDialog(SignupActivity.this,R.style.AppTheme_Dialog);
+        pDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dialog);
         pDialog.setCancelable(false);
 
         // Session manager
@@ -93,19 +93,19 @@ public class SignupActivity extends AppCompatActivity {
     public void signup_check() {
 //        Account a1 = new Account("abc@abc.com", "123456");
 
-        final String nameText= nameView.getText().toString().trim();
+        final String nameText = nameView.getText().toString().trim();
         final String emailText = email.getText().toString().trim();
         final String passwordText = password.getText().toString().trim();
-        registerUser(nameText,emailText,passwordText);
-//        if (check_validation(nameText,emailText,passwordText)) {
-//            authenticate(nameText,emailText, passwordText);
-//            final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-//                    R.style.AppTheme_Dialog);
-//            progressDialog.setIndeterminate(true);
-//            progressDialog.setMessage("Saving...");
-//            progressDialog.show();
-
-            // TODO: Implement your own authentication logic here.
+        //registerUser(nameText,emailText,passwordText);
+        if (check_validation(nameText, emailText, passwordText)) {
+            authenticate(nameText, emailText, passwordText);
+            final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+                    R.style.AppTheme_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Saving...");
+            progressDialog.show();
+//
+//             //TODO: Implement your own authentication logic here.
 //            new android.os.Handler().postDelayed(
 //                    new Runnable() {
 //                        public void run() {
@@ -119,8 +119,8 @@ public class SignupActivity extends AppCompatActivity {
 //                    }, 300);
 //        } else {
 //            signup_fail();
-
-//        }
+//
+        }
     }
 
     private void signup_success() {
@@ -136,7 +136,6 @@ public class SignupActivity extends AppCompatActivity {
 
     public boolean check_validation(final String nameText, final String emailText, final String passwordText) {
         boolean validation;
-
 
 
         if (TextUtils.isEmpty(nameText)) {
@@ -183,7 +182,7 @@ public class SignupActivity extends AppCompatActivity {
     public void authenticate(final String nameText, final String emailText, final String passwordText) {
         //exist or not
         String tag_string_req = "req_register";
-        
+
         pDialog.setMessage("Registering ...");
         showDialog();
 
@@ -343,14 +342,14 @@ public class SignupActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    public boolean validateName(String s){
-        char name[]=s.toCharArray();
-        for (char c:name ){
-            if(!((c>='A'&&c<='z')||(c==' '))) {
+    public boolean validateName(String s) {
+        char name[] = s.toCharArray();
+        for (char c : name) {
+            if (!((c >= 'A' && c <= 'z') || (c == ' '))) {
                 return false;
             }
         }
-        return  true;
+        return true;
     }
 
     @Override

@@ -3,16 +3,15 @@ package com.limi.andorid.vocabularyassistant;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                login_check();
+//                login_check();
+//                login_success();
+                Intent i = new Intent(getApplicationContext(),
+                        MainActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -59,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
     }
 
 
@@ -98,8 +101,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login_success() {
-        login.setEnabled(true);
-        finish();
+        //login.setEnabled(true);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        //finish();
     }
 
     private void login_fail() {
@@ -145,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean authenticate() {
         String emailText = email.getText().toString();
         String passwordText = password.getText().toString();
-        return (emailText.equalsIgnoreCase("aaa@aaa.com") && passwordText.equals("123456"));
+        return (emailText.equalsIgnoreCase("aa@aaa.com") && passwordText.equals("123456"));
     }
 
     @Override
