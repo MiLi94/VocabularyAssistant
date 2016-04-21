@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme_Dark">
@@ -23,22 +23,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme_Dark"
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".activity.SignupActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".activity.LoginActivity"
             android:theme="@style/AppTheme_Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.limi.andorid.vocabularyassistant.LoginActivity" />
+                android:value=".activity.LoginActivity" />
         </activity>
 
         <!--
