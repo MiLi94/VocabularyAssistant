@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant;
+package com.limi.andorid.vocabularyassistant.act;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.helper.ColorArcProgressBar;
 import com.special.ResideMenu.ResideMenu;
 

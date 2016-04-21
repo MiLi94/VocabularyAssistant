@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant;
+package com.limi.andorid.vocabularyassistant.act;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.limi.andorid.vocabularyassistant.R;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 

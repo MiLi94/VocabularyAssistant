@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant;
+package com.limi.andorid.vocabularyassistant.act;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.app.AppConfig;
 import com.limi.andorid.vocabularyassistant.app.AppController;
 import com.limi.andorid.vocabularyassistant.helper.CharsetStingRequest;

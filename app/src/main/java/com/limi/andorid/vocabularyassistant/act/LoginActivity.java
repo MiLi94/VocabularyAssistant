@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant;
+package com.limi.andorid.vocabularyassistant.act;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.limi.andorid.vocabularyassistant.R;
 
 
 public class LoginActivity extends AppCompatActivity {
