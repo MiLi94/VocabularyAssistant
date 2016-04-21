@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant.act;
+package com.limi.andorid.vocabularyassistant.helper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

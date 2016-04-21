@@ -2,28 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#ebebeb" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingRight="24dp">
 
-        <!--<ImageView android:src="@drawable/logo"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="72dp"-->
-        <!--android:layout_marginBottom="24dp"-->
-        <!--android:layout_gravity="center_horizontal" />-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:src="@mipmap/logo2" />
 
-        <!-- Name Label -->
-        <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp">-->
         <EditText
             android:id="@+id/input_name"
             android:layout_width="match_parent"
@@ -74,12 +93,16 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_sign_up"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="225dp"
+            android:layout_height="78dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
+            android:background="@mipmap/button1"
             android:padding="12dp"
-            android:text="@string/action_sign_up" />
+            android:text="@string/action_sign_up"
+            android:textColor="#ffffff" />
+
 
         <TextView
             android:id="@+id/link_login"
@@ -88,6 +111,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="@string/content_login"
+            android:textColor="#f172e5"
             android:textSize="16sp" />
 
     </LinearLayout>

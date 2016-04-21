@@ -11,7 +11,7 @@
     <string name="error_password_length">Must between 6 and 16 characters</string>
     <string name="action_sign_up">Sing Up</string>
     <string name="content_login">Have account? Log in</string>
-    <string name="prompt_name">Name</string>
+    <string name="prompt_name">Nick name</string>
     <string name="error_invalid_name">The filed can only cotains alphabet and space blank</string>
     <string name="title_activity_test1">test1</string>
     <string name="large_text">
@@ -104,4 +104,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="GRE">GRE</string>
+    <string name="logo">logo</string>
 </resources>

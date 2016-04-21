@@ -23,18 +23,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
 
         Button menuBtn = (Button) findViewById(R.id.title_bar_left_menu);
+        Button favBtn = (Button) findViewById(R.id.title_bar_right_menu);
         menuBtn.setOnClickListener(this);
+        favBtn.setOnClickListener(this);
         resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
-        // create menu items;
 
+        // create menu items;
         for (int i = 0; i < titles.length; i++) {
             item[i] = new ResideMenuItem(this, icon[i], titles[i]);
             item[i].setOnClickListener(this);
@@ -56,10 +55,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.title_bar_left_menu:
                 resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
                 break;
+            case R.id.title_bar_right_menu:
+                changeFragment(new NotebookFragment());
+                break;
 
         }
         if (v == item[0]) {
             changeFragment(new HomeFragment());
+            resideMenu.closeMenu();
+        }
+        if (v == item[1]) {
+            changeFragment(new NotebookFragment());
             resideMenu.closeMenu();
         }
 
@@ -68,7 +74,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
+        // Disable going back to the LoginActivity
         moveTaskToBack(true);
     }
 
