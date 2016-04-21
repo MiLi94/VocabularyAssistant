@@ -1,15 +1,22 @@
 package com.limi.andorid.vocabularyassistant;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
     ResideMenu resideMenu;
+    String titles[] = {"Home", "My Notebook", "Learning Trace", "Message", "Chatting", "Settings"};
+    int icon[] = {R.mipmap.icon_home, R.mipmap.icon_calendar, R.mipmap.icon_profile, R.mipmap.icon_calendar, R.mipmap.icon_profile, R.mipmap.icon_settings};
+
+    ResideMenuItem item[] = new ResideMenuItem[titles.length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,29 +24,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+
+
+        Button menuBtn = (Button) findViewById(R.id.title_bar_left_menu);
+        menuBtn.setOnClickListener(this);
         resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);
-
+        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
         // create menu items;
-        String titles[] = {"Home", "Profile", "Calendar", "Settings"};
-        int icon[] = {R.mipmap.icon_home, R.mipmap.icon_profile, R.mipmap.icon_calendar, R.mipmap.icon_settings};
 
         for (int i = 0; i < titles.length; i++) {
-            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
-            item.setOnClickListener(this);
-            resideMenu.addMenuItem(item, ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
+            item[i] = new ResideMenuItem(this, icon[i], titles[i]);
+            item[i].setOnClickListener(this);
+            resideMenu.addMenuItem(item[i], ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
         }
+        if (savedInstanceState == null)
+            changeFragment(new HomeFragment());
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     @Override
@@ -49,6 +51,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.title_bar_left_menu:
+                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+                break;
+
+        }
+        if (v == item[0]) {
+            changeFragment(new HomeFragment());
+            resideMenu.closeMenu();
+        }
+
 
     }
 
@@ -56,5 +69,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
+    }
+
+
+    public ResideMenu getResideMenu() {
+        return resideMenu;
+    }
+
+    private void changeFragment(Fragment targetFragment) {
+        resideMenu.clearIgnoredViewList();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }
