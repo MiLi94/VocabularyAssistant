@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant.act;
+package com.limi.andorid.vocabularyassistant.acti;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,7 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private AppCompatButton login;
+    private TextView signupView;
     private SharedPreferences sp;
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -40,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
         login = (AppCompatButton) findViewById(R.id.btn_login);
-        TextView signupView = (TextView) findViewById(R.id.link_signup);
+        signupView = (TextView) findViewById(R.id.link_signup);
 
 
         login.setOnClickListener(new View.OnClickListener() {

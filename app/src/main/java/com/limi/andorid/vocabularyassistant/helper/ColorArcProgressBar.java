@@ -26,9 +26,9 @@ public class ColorArcProgressBar extends View {
     private final int DEGREE_PROGRESS_DISTANCE = dipToPx(8);
     private int mWidth;
     private int mHeight;
-    private int diameter = 100;  //直径
-    private float centerX;  //圆心X坐标
-    private float centerY;  //圆心Y坐标
+    private int diameter = 100;  //diameter
+    private float centerX;
+    private float centerY;
     private Paint allArcPaint;
     private Paint progressPaint;
     private Paint vTextPaint;

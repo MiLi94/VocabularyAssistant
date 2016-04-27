@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant.act;
+package com.limi.andorid.vocabularyassistant.acti;
 
 
 import android.os.Bundle;

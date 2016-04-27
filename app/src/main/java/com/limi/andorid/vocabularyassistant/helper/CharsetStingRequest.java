@@ -27,9 +27,7 @@ public class CharsetStingRequest extends StringRequest {
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-
         String str = null;
-
         try {
             str = new String(response.data, "utf-8");
         } catch (UnsupportedEncodingException e) {

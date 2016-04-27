@@ -1,5 +1,6 @@
-package com.limi.andorid.vocabularyassistant.act;
+package com.limi.andorid.vocabularyassistant.acti;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,7 +37,10 @@ public class HomeFragment extends Fragment {
         parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+//                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+                Intent i = new Intent(getActivity(),
+                        RecitingActivity.class);
+                startActivity(i);
             }
         });
 

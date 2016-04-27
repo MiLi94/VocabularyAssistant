@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant.act;
+package com.limi.andorid.vocabularyassistant.acti;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,6 +32,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+        resideMenu.setScaleValue(0.6f);
 
         // create menu items;
         for (int i = 0; i < titles.length; i++) {
