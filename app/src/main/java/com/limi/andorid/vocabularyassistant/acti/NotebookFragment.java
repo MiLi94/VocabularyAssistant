@@ -23,7 +23,7 @@ public class NotebookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.notebook_fragment, container, false);
-        listView = (ListView) parentView.findViewById(R.id.listView);
+        listView = (ListView) parentView.findViewById(R.id.listView1);
         initView();
         return parentView;
     }

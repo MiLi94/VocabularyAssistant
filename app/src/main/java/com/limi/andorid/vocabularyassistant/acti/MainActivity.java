@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.special.ResideMenu.ResideMenu;
@@ -32,7 +33,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
-        resideMenu.setScaleValue(0.6f);
 
         // create menu items;
         for (int i = 0; i < titles.length; i++) {
@@ -62,11 +62,21 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         }
         if (v == item[0]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("Vocabulary Assistant");
             changeFragment(new HomeFragment());
             resideMenu.closeMenu();
         }
         if (v == item[1]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("My Notebook");
             changeFragment(new NotebookFragment());
+            resideMenu.closeMenu();
+        }
+        if (v == item[5]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("Setting");
+            changeFragment(new SettingFragment());
             resideMenu.closeMenu();
         }
 
