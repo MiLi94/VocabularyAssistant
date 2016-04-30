@@ -97,30 +97,22 @@ public class SignupActivity extends AppCompatActivity {
         final String nameText = nameView.getText().toString().trim();
         final String emailText = email.getText().toString().trim();
         final String passwordText = password.getText().toString().trim();
-        //registerUser(nameText,emailText,passwordText);
         if (check_validation(nameText, emailText, passwordText)) {
-            authenticate(nameText, emailText, passwordText);
             final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                     R.style.AppTheme_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Saving...");
             progressDialog.show();
-//
-//             //TODO: Implement your own authentication logic here.
-//            new android.os.Handler().postDelayed(
-//                    new Runnable() {
-//                        public void run() {
-//                            // On complete call either onLoginSuccess or onLoginFailed
-//                            if (authenticate(nameText,emailText, passwordText))
-//                                signup_success();
-//                            else
-//                                signup_fail();
-//                            progressDialog.dismiss();
-//                        }
-//                    }, 300);
-//        } else {
-//            signup_fail();
-//
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+
+                            register(nameText, emailText, passwordText);
+                            progressDialog.dismiss();
+                        }
+                    }, 3000);
+        } else {
+            signup_fail();
         }
     }
 
@@ -180,7 +172,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    public void authenticate(final String nameText, final String emailText, final String passwordText) {
+    public void register(final String nameText, final String emailText, final String passwordText) {
         //exist or not
         String tag_string_req = "req_register";
 
@@ -212,18 +204,19 @@ public class SignupActivity extends AppCompatActivity {
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
 
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
+//                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        signup_success();
                         // Launch login activity
 
-                        finish();
+//                        finish();
 
                     } else {
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+//                        String errorMsg = jObj.getString("error_msg");
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
+                        signup_fail();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -258,87 +251,6 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void registerUser(final String name, final String email,
-                              final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_register";
-
-        pDialog.setMessage("Registering ...");
-        showDialog();
-
-        CharsetStingRequest strReq = new CharsetStingRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response);
-                hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
-
-                        // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
-
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                SignupActivity.this,
-                                LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("name", name);
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
     public boolean validateName(String s) {
         char name[] = s.toCharArray();
