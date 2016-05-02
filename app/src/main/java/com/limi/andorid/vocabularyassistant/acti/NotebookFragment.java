@@ -12,6 +12,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.helper.UserWord;
+import com.limi.andorid.vocabularyassistant.helper.Word;
+import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.util.ArrayList;
 
@@ -44,9 +47,17 @@ public class NotebookFragment extends Fragment {
 
     private ArrayList<String> getCalendarData() {
         ArrayList<String> wordList = new ArrayList<>();
-        wordList.add("Word1");
-        wordList.add("Word2");
-        wordList.add("Word3");
+        ArrayList<Word> words = WordImportHandler.threeKArrayList;
+//        wordList.add("Word1");
+//        wordList.add("Word2");
+//        wordList.add("Word3");
+
+        for (UserWord u : UserWord.userWordArrayList) {
+            if (u.isFavourite()) {
+                wordList.add(words.get(u.getWordID()).getWord());
+            }
+
+        }
 
         return wordList;
     }

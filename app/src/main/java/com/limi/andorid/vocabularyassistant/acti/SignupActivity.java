@@ -92,7 +92,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signup_check() {
-//        Account a1 = new Account("abc@abc.com", "123456");
+//        UserAccount a1 = new UserAccount("abc@abc.com", "123456");
 
         final String nameText = nameView.getText().toString().trim();
         final String emailText = email.getText().toString().trim();

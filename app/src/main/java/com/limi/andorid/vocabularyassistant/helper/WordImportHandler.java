@@ -25,7 +25,6 @@ public class WordImportHandler {
             Document doc = db.parse(is);
 
             NodeList wordList = doc.getElementsByTagName("item");
-            System.out.println("共有" + wordList.getLength() + "个word节点");
             for (int i = 0; i < wordList.getLength(); i++) {
 
                 String wordName = null;
@@ -38,7 +37,6 @@ public class WordImportHandler {
                 Element elem = (Element) aWord;
 
                 for (Node node = elem.getFirstChild(); node != null; node = node.getNextSibling()) {
-                    //          System.out.println("node.getNodeType() = " + node.getNodeType());
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         String name = node.getNodeName();
                         if (name.equals("word")) {

@@ -1,11 +1,14 @@
 package com.limi.andorid.vocabularyassistant.helper;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by limi on 16/4/27.
  */
+
 public class UserWord {
+    public static ArrayList<UserWord> userWordArrayList = new ArrayList<>();
     private int wordID;
     private int userID;
     private int wrongTime = 0;
@@ -19,6 +22,27 @@ public class UserWord {
         this.userID = userID;
         this.wordBase = wordBase;
         date = new Date();
+        userWordArrayList.add(this);
+    }
+
+//    public static void addList(UserWord word){
+//        userWordArrayList.add(word);
+//    }
+
+    public void setFavourite() {
+        isFavourite = !isFavourite;
+    }
+
+    public ArrayList<UserWord> getUserWordArrayList() {
+        return userWordArrayList;
+    }
+
+    public void inWrongTime() {
+        wrongTime++;
+    }
+
+    public void deWrongTime() {
+        wrongTime--;
     }
 
     public int getWordID() {
@@ -64,4 +88,5 @@ public class UserWord {
     public void setWordBase(String wordBase) {
         this.wordBase = wordBase;
     }
+
 }

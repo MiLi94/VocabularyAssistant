@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.helper.SQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 
 import java.util.ArrayList;
 
@@ -20,12 +22,19 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private View parentView;
     private ListView list;
 
+    private SQLiteHandler db;
+    private SessionManager session;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_setting, container, false);
         list = (ListView) parentView.findViewById(R.id.listView);
         Button logout_button = (Button) parentView.findViewById(R.id.btn_logout);
         logout_button.setOnClickListener(this);
+        db = new SQLiteHandler(getActivity());
+
+        // session manager
+        session = new SessionManager(getActivity());
         initView();
 
 
@@ -49,7 +58,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private ArrayList<String> getCalendarData() {
         ArrayList<String> wordList = new ArrayList<>();
-        wordList.add("Account Information");
+        wordList.add("UserAccount Information");
         wordList.add("Vocabulary Selection");
         wordList.add("Reset Planning");
         wordList.add("Notification");
@@ -58,9 +67,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logoutUser() {
-//        session.setLogin(false);
-//
-//        db.deleteUsers();
+        session.setLogin(false);
+
+        db.deleteUsers();
 
         // Launching the login activity
         Intent intent = new Intent(getActivity(), LoginActivity.class);

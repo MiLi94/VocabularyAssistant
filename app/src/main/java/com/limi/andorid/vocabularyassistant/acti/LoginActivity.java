@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void login_check() {
-//        Account a1 = new Account("abc@abc.com", "123456");
+//        UserAccount a1 = new UserAccount("abc@abc.com", "123456");
 
         if (check_validation()) {
             final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,

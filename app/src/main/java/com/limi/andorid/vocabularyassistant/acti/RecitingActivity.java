@@ -22,7 +22,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     TextView meaningTextView;
     TextView phoneticTextView;
     Button lastButton;
+    Button favourite;
     Button nextButton;
+    UserWord userWord;
     int startID;
     int currentID;
     int userID;
@@ -36,6 +38,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         meaningTextView = (TextView) findViewById(R.id.meaning);
         phoneticTextView = (TextView) findViewById(R.id.phonetic);
         lastButton = (Button) findViewById(R.id.last_button);
+        favourite = (Button) findViewById(R.id.fav);
         nextButton = (Button) findViewById(R.id.next_button);
 //        nextButton.setVisibility();
         try {
@@ -44,9 +47,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Word word = WordImportHandler.threeKArrayList.get(11);
         lastButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        favourite.setOnClickListener(this);
         startID = 0;
         endID = 10;
         userID = 1;
@@ -57,7 +60,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 
     private void init() {
         currentID = startID;
-        updateView(WordImportHandler.threeKArrayList.get(currentID));
+        Word word = WordImportHandler.threeKArrayList.get(currentID);
+        userWord = new UserWord(word.getID(), userID, word.getWordBase());
+        updateView(word);
     }
 
     public Word getNextWord() {
@@ -74,8 +79,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         wordTextView.setText(word.getWord());
         phoneticTextView.setText(word.getPhonetic());
         meaningTextView.setText(word.getTrans());
-        UserWord userWord = new UserWord(userID, word.getID(), word.getWordBase());
-        userWordArrayList.add(userWord);
+        userWord = new UserWord(word.getID(), userID, word.getWordBase());
         return word;
     }
 
@@ -93,8 +97,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         wordTextView.setText(word.getWord());
         phoneticTextView.setText(word.getPhonetic());
         meaningTextView.setText(word.getTrans());
-        UserWord userWord = new UserWord(userID, word.getID(), word.getWordBase());
-        userWordArrayList.add(userWord);
+        userWord = new UserWord(word.getID(), userID, word.getWordBase());
         return word;
     }
 
@@ -107,14 +110,17 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Word currentWord;
+        Word currentWord = null;
         switch (v.getId()) {
             case R.id.last_button:
                 currentWord = getLastWord();
-
                 break;
             case R.id.next_button:
                 currentWord = getNextWord();
+                break;
+            case R.id.fav:
+
+                userWord.setFavourite();
                 break;
         }
     }
