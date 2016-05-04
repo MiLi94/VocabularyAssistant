@@ -13,18 +13,18 @@ import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class RecitingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    static ArrayList<UserWord> userWordArrayList = new ArrayList<>();
     TextView wordTextView;
     TextView meaningTextView;
     TextView phoneticTextView;
+    Button returnButton;
     Button lastButton;
     Button favourite;
     Button nextButton;
     UserWord userWord;
+    int unit;
     int startID;
     int currentID;
     int userID;
@@ -37,6 +37,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         wordTextView = (TextView) findViewById(R.id.word);
         meaningTextView = (TextView) findViewById(R.id.meaning);
         phoneticTextView = (TextView) findViewById(R.id.phonetic);
+        returnButton = (Button) findViewById(R.id.title_bar_left_menu);
         lastButton = (Button) findViewById(R.id.last_button);
         favourite = (Button) findViewById(R.id.fav);
         nextButton = (Button) findViewById(R.id.next_button);
@@ -50,8 +51,10 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         lastButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         favourite.setOnClickListener(this);
-        startID = 0;
-        endID = 10;
+        returnButton.setOnClickListener(this);
+        unit = 0;
+        startID = unit * 10;
+        endID = unit * 10 + 9;
         userID = 1;
         init();
 
@@ -61,7 +64,13 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     private void init() {
         currentID = startID;
         Word word = WordImportHandler.threeKArrayList.get(currentID);
-        userWord = new UserWord(word.getID(), userID, word.getWordBase());
+        if (UserWord.userWordHashMap.containsKey(currentID))
+            userWord = UserWord.userWordHashMap.get(currentID);
+        else {
+            userWord = new UserWord(word.getID(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getID(), userWord);
+
+        }
         updateView(word);
     }
 
@@ -76,10 +85,15 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         }
 
         Word word = WordImportHandler.threeKArrayList.get(currentID);
-        wordTextView.setText(word.getWord());
-        phoneticTextView.setText(word.getPhonetic());
-        meaningTextView.setText(word.getTrans());
-        userWord = new UserWord(word.getID(), userID, word.getWordBase());
+        if (UserWord.userWordHashMap.containsKey(currentID))
+            userWord = UserWord.userWordHashMap.get(currentID);
+        else {
+            userWord = new UserWord(word.getID(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getID(), userWord);
+
+        }
+        updateView(word);
+
         return word;
     }
 
@@ -94,10 +108,17 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             currentID--;
         }
         Word word = WordImportHandler.threeKArrayList.get(currentID);
-        wordTextView.setText(word.getWord());
-        phoneticTextView.setText(word.getPhonetic());
-        meaningTextView.setText(word.getTrans());
-        userWord = new UserWord(word.getID(), userID, word.getWordBase());
+        if (UserWord.userWordHashMap.containsKey(currentID))
+            userWord = UserWord.userWordHashMap.get(currentID);
+        else {
+            userWord = new UserWord(word.getID(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getID(), userWord);
+
+        }
+
+
+        updateView(word);
+
         return word;
     }
 
@@ -105,6 +126,15 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         wordTextView.setText(word.getWord());
         phoneticTextView.setText(word.getPhonetic());
         meaningTextView.setText(word.getTrans());
+        if (userWord.isFavourite()) {
+//            userWord.setFavourite();
+            favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
+
+        } else {
+//            userWord.setFavourite();
+            favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star3));
+
+        }
 
     }
 
@@ -119,10 +149,27 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                 currentWord = getNextWord();
                 break;
             case R.id.fav:
+                userWord = UserWord.userWordHashMap.get(currentID);
+                if (userWord.isFavourite()) {
+                    userWord.setIsFavourite(false);
+                    favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star3));
+                } else {
+                    userWord.setIsFavourite(true);
+                    favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
+                }
+//                favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
 
-                userWord.setFavourite();
+                break;
+            case R.id.title_bar_left_menu:
+                finishReciting();
                 break;
         }
+    }
+
+    private void finishReciting() {
+
+
+        finish();
     }
 }
 

@@ -57,7 +57,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
                 break;
             case R.id.title_bar_right_menu:
-                changeFragment(new NotebookFragment());
+                changeFragment(new FavouriteWordFragment());
                 break;
 
         }
@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (v == item[1]) {
             TextView textView = (TextView) findViewById(R.id.title_main);
             textView.setText("My Notebook");
-            changeFragment(new NotebookFragment());
+            changeFragment(new MyNoteBookFragment());
             resideMenu.closeMenu();
         }
         if (v == item[5]) {

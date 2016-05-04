@@ -61,13 +61,6 @@ public class Word {
 
     @Override
     public String toString() {
-        return "Word{" +
-                "word='" + word + '\'' +
-                ", trans='" + trans + '\'' +
-                ", tags='" + tags + '\'' +
-                ", phonetic='" + phonetic + '\'' +
-                ", ID=" + ID +
-                ", wordBase='" + wordBase + '\'' +
-                '}';
+        return word;
     }
 }

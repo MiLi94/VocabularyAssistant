@@ -389,7 +389,7 @@ public class ColorArcProgressBar extends View {
     }
 
     /**
-     * 得到屏幕宽度
+     *
      *
      * @return
      */

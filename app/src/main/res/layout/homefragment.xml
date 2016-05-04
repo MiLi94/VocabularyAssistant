@@ -163,7 +163,7 @@
                 android:layout_gravity="left|center"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Word of Today"
+                android:text="Daily Sentence"
                 android:textColor="#9a9a9a"
                 android:textSize="17sp" />
 
@@ -173,22 +173,22 @@
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/word"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!--<TextView-->
+                <!--android:id="@+id/word"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
 
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="curriculum :"
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
+                <!--android:gravity="center"-->
+                <!--android:padding="5dp"-->
+                <!--android:text="curriculum :"-->
+                <!--android:textColor="#000000"-->
+                <!--android:textSize="20sp" />-->
 
                 <TextView
                     android:id="@+id/todayMeaning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:padding="5dp"
                     android:text="n. an integrated course of academic studies"
                     android:textColor="#000000"

@@ -19,14 +19,24 @@ import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 import java.util.ArrayList;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
+    private static SettingFragment instance;
     private View parentView;
     private ListView list;
-
     private SQLiteHandler db;
     private SessionManager session;
 
+    public static SettingFragment getInstance() {
+        if (instance == null) {
+            synchronized (SettingFragment.class) {
+                if (instance == null) instance = new SettingFragment();
+            }
+        }
+        return instance;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         parentView = inflater.inflate(R.layout.fragment_setting, container, false);
         list = (ListView) parentView.findViewById(R.id.listView);
         Button logout_button = (Button) parentView.findViewById(R.id.btn_logout);

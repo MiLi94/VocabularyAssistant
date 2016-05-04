@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
 Orange Blue
+
     <color name="primary">#FF5722</color>
     <color name="primary_dark">#E64A19</color>
     <color name="primary_light">#FFCCBC</color>
@@ -33,4 +34,6 @@ Orange Blue
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#FF6666</color>
+    <color name="yellow">#FFFF00</color>
 </resources>

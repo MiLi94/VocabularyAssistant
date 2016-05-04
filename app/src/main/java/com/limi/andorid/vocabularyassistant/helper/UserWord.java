@@ -1,14 +1,14 @@
 package com.limi.andorid.vocabularyassistant.helper;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  * Created by limi on 16/4/27.
  */
 
 public class UserWord {
-    public static ArrayList<UserWord> userWordArrayList = new ArrayList<>();
+    public static LinkedHashMap<Integer, UserWord> userWordHashMap = new LinkedHashMap<>();
     private int wordID;
     private int userID;
     private int wrongTime = 0;
@@ -22,19 +22,39 @@ public class UserWord {
         this.userID = userID;
         this.wordBase = wordBase;
         date = new Date();
-        userWordArrayList.add(this);
+
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserWord userWord = (UserWord) o;
+
+        if (wordID != userWord.wordID) return false;
+        if (userID != userWord.userID) return false;
+        return !(wordBase != null ? !wordBase.equals(userWord.wordBase) : userWord.wordBase != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = wordID;
+        result = 31 * result + userID;
+        result = 31 * result + (wordBase != null ? wordBase.hashCode() : 0);
+        return result;
+    }
 //    public static void addList(UserWord word){
-//        userWordArrayList.add(word);
+//        userWordHashMap.add(word);
 //    }
 
     public void setFavourite() {
         isFavourite = !isFavourite;
     }
 
-    public ArrayList<UserWord> getUserWordArrayList() {
-        return userWordArrayList;
+    public LinkedHashMap<Integer, UserWord> getUserWordHashMap() {
+        return userWordHashMap;
     }
 
     public void inWrongTime() {

@@ -7,10 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.app.AppController;
 import com.limi.andorid.vocabularyassistant.helper.ColorArcProgressBar;
 import com.special.ResideMenu.ResideMenu;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by limi on 16/4/20.
@@ -19,9 +28,12 @@ import com.special.ResideMenu.ResideMenu;
 
 public class HomeFragment extends Fragment {
 
+    //    private String TAG = getActivity().getClass().getSimpleName();
     private View parentView;
     private ResideMenu resideMenu;
     private ColorArcProgressBar colorArcProgressBar;
+    private TextView textView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,9 +60,64 @@ public class HomeFragment extends Fragment {
         FrameLayout ignored_view = (FrameLayout) parentView.findViewById(R.id.ignored_view);
         resideMenu.addIgnoredView(ignored_view);
         colorArcProgressBar = (ColorArcProgressBar) parentView.findViewById(R.id.progressbar);
+
+        textView = (TextView) parentView.findViewById(R.id.todayMeaning);
         colorArcProgressBar.setCurrentValues(77);
         colorArcProgressBar.setDiameter(200);
+//        getSentenceOfToday();
+        getSentenceOfToday();
+
+
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        colorArcProgressBar.setCurrentValues(77);
+        colorArcProgressBar.setDiameter(200);
+        getSentenceOfToday();
+    }
+
+    private void getSentenceOfToday() {
+        String tag_string_req = "getSentence";
+
+        String url = "http://open.iciba.com/dsapi";
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String eScentence = jObj.getString("content");
+                    textView.setText(eScentence);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Log.i(TAG, error.getMessage());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+    }
+
+//    public class SentenceResponeLinster<String> implements Response.Listener<String>{
+//
+//
+//        @Override
+//        public void onResponse(java.lang.String response) {
+//
+//        }
+//    }
 
 
 }

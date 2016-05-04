@@ -18,6 +18,7 @@ public class WordImportHandler {
 
     public static ArrayList<Word> threeKArrayList = new ArrayList<>();
 
+
     public static void getDataFromXml(InputStream is) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
