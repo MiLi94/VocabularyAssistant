@@ -26,12 +26,13 @@
                 android:background="@mipmap/undo2" />
 
             <TextView
+                android:id="@+id/title_rec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="Reciting"
 
+                android:text="Reciting"
                 android:textColor="#000000"
                 android:textSize="18sp" />
         </FrameLayout>

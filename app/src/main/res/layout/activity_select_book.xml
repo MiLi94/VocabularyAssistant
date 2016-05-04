@@ -83,7 +83,6 @@
         android:layout_height="70dp"
         android:layout_below="@+id/IELTS"
         android:layout_gravity="center_vertical"
-        android:layout_toEndOf="@+id/IELTS"
         android:layout_toRightOf="@+id/IELTS"
         android:background="@mipmap/categoty"
         android:text="GRE"

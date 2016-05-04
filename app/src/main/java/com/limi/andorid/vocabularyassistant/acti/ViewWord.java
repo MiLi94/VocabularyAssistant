@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.limi.andorid.vocabularyassistant.helper.UserWord;
 import com.limi.andorid.vocabularyassistant.helper.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
@@ -22,10 +21,11 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
     Button lastButton;
     Button favourite;
     Button nextButton;
-    UserWord userWord;
-    int startID;
-    int currentID;
-    int endID;
+    TextView titleTextView;
+    //    ArrayList<Integer> integers = new ArrayList<>();
+    int startIndex;
+    int currentIndex;
+    int endIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,30 +34,48 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String strContentString = bundle.getString("ID");
+//        integers = bundle.getIntegerArrayList("list");
+
         assert strContentString != null;
         Toast.makeText(getApplicationContext(), strContentString, Toast.LENGTH_SHORT).show();
-        currentID = Integer.parseInt(strContentString);
-        Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
+        int wordCurrentID = Integer.parseInt(strContentString);
+        Toast.makeText(getApplicationContext(), String.valueOf(currentIndex), Toast.LENGTH_SHORT).show();
 
 
         wordTextView = (TextView) findViewById(R.id.word);
         meaningTextView = (TextView) findViewById(R.id.meaning);
         phoneticTextView = (TextView) findViewById(R.id.phonetic);
         returnButton = (Button) findViewById(R.id.title_bar_left_menu);
+        nextButton = (Button) findViewById(R.id.next_button);
         lastButton = (Button) findViewById(R.id.last_button);
         favourite = (Button) findViewById(R.id.fav);
+        titleTextView = (TextView) findViewById(R.id.title_rec);
+        titleTextView.setText("View Meaning");
+        nextButton.setOnClickListener(this);
         returnButton.setOnClickListener(this);
+        lastButton.setOnClickListener(this);
         assert favourite != null;
         favourite.setVisibility(View.INVISIBLE);
+        startIndex = 0;
+        endIndex = FavouriteWordFragment.wordFav.size() - 1;
+        currentIndex = findindex(wordCurrentID);
 
-        initView();
+        initView(wordCurrentID);
 
 
     }
 
-    private void initView() {
-//        currentID = startID;
-        Word word = WordImportHandler.threeKArrayList.get(currentID);
+    private int findindex(int wordID) {
+        for (int i = 0; i < FavouriteWordFragment.wordFav.size(); i++) {
+            if (FavouriteWordFragment.wordFav.get(i) == wordID) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void initView(int wordCurrentID) {
+        Word word = WordImportHandler.threeKArrayList.get(wordCurrentID);
         updateView(word);
     }
 
@@ -68,11 +86,28 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void setNextButton() {
+        if (currentIndex >= endIndex) {
+
+        } else {
+            currentIndex++;
+            int id = FavouriteWordFragment.wordFav.get(currentIndex);
+            Word word = WordImportHandler.threeKArrayList.get(id);
+            updateView(word);
+
+        }
 
     }
 
     private void setLastButtonButton() {
+        if (currentIndex <= startIndex) {
 
+        } else {
+            currentIndex--;
+            int id = FavouriteWordFragment.wordFav.get(currentIndex);
+            Word word = WordImportHandler.threeKArrayList.get(id);
+            updateView(word);
+
+        }
     }
 
     @Override
@@ -86,6 +121,7 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.title_bar_left_menu:
                 finishReciting();
+                break;
 
 
         }
