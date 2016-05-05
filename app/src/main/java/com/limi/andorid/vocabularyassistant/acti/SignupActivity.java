@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +20,7 @@ import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.app.AppConfig;
 import com.limi.andorid.vocabularyassistant.app.AppController;
 import com.limi.andorid.vocabularyassistant.helper.CharsetStingRequest;
-import com.limi.andorid.vocabularyassistant.helper.LoginSQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 
 import org.json.JSONException;
@@ -41,7 +39,7 @@ public class SignupActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private LoginSQLiteHandler db;
+    private MySQLiteHandler db;
 
 
     @Override
@@ -63,7 +61,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         // SQLite database handler
-        db = new LoginSQLiteHandler(getApplicationContext());
+        db = new MySQLiteHandler(getApplicationContext());
 
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
@@ -193,7 +191,7 @@ public class SignupActivity extends AppCompatActivity {
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
+                        Integer uid = jObj.getInt("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
@@ -261,29 +259,6 @@ public class SignupActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void showDialog() {
         if (!pDialog.isShowing())

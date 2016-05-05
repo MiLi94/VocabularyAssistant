@@ -6,38 +6,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.UserWord;
 import com.limi.andorid.vocabularyassistant.helper.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 
 public class RecitingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView wordTextView;
-    TextView meaningTextView;
-    TextView phoneticTextView;
-    Button returnButton;
-    Button lastButton;
-    Button favourite;
-    Button nextButton;
-    UserWord userWord;
-    int unit;
-    int startID;
-    int currentID;
-    int userID;
-    int endID;
+    MySQLiteHandler db;
+    private TextView wordTextView;
+    private TextView meaningTextView;
+    private TextView phoneticTextView;
+    private Button returnButton;
+    private Button lastButton;
+    private Button favourite;
+    private Button nextButton;
+    private UserWord userWord;
+    private int nextStart;
+    private int unit;
+    private int startID;
+    private int currentID;
+    private int userID;
+    private int endID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciting);
 
-
-        int nextStart;
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
@@ -46,39 +47,58 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             nextStart = -1;
 
         }
+        db = new MySQLiteHandler(getApplicationContext());
+
         wordTextView = (TextView) findViewById(R.id.word);
         meaningTextView = (TextView) findViewById(R.id.meaning);
         phoneticTextView = (TextView) findViewById(R.id.phonetic);
+
         returnButton = (Button) findViewById(R.id.title_bar_left_menu);
         lastButton = (Button) findViewById(R.id.last_button);
         favourite = (Button) findViewById(R.id.fav);
         nextButton = (Button) findViewById(R.id.next_button);
-//        nextButton.setVisibility();
-        try {
-            InputStream inputStream = getAssets().open("threek.xml");
-            WordImportHandler.getDataFromXml(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         lastButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         favourite.setOnClickListener(this);
         returnButton.setOnClickListener(this);
+
         unit = 0;
         if (nextStart == -1) {
             startID = 0;
         } else {
             startID = nextStart;
         }
-        endID = nextStart + 9;
-        userID = 1;
+
+        userID = MainActivity.currentUserID;
         init();
 
 
     }
 
     private void init() {
+
+        if (nextStart == -1) {
+            ArrayList<UserWord> words1 = db.getUserWordData(userID);
+            if (UserWord.userWordHashMap.size() == 0) {
+
+                for (UserWord word : words1) {
+                    UserWord.userWordHashMap.put(word.getWordID(), word);
+                }
+            }
+            if (words1.size() == 0) {
+                startID = 0;
+            } else {
+                startID = words1.get(words1.size() - 1).getWordID() + 1;
+
+            }
+
+        }
+        endID = startID + 9;
         currentID = startID;
+
+        Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
+
         Word word = WordImportHandler.threeKArrayList.get(currentID);
         if (UserWord.userWordHashMap.containsKey(currentID))
             userWord = UserWord.userWordHashMap.get(currentID);
@@ -87,13 +107,14 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             UserWord.userWordHashMap.put(word.getID(), userWord);
 
         }
+        if (!db.isWordExist(userWord)) {
+            db.addUserWord(userWord);
+        }
         updateView(word);
     }
 
+
     public Word getNextWord() {
-//        String isRan=getPref(iWord.PREFS_NAME,iWord.IS_RANDOM,"true");
-//        if (isRan=="true") return iWord.wordList.get(random.nextInt(iWord.wordList.size()));
-//        else  return iWord.wordList.get((wordId++)%iWord.wordList.size());
         if (currentID >= endID) {
             //button set finish or review
             Intent intent = new Intent(RecitingActivity.this, SummaryActivity.class);
@@ -117,15 +138,15 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             UserWord.userWordHashMap.put(word.getID(), userWord);
 
         }
+        if (!db.isWordExist(userWord)) {
+            db.addUserWord(userWord);
+        }
         updateView(word);
 
         return word;
     }
 
     public Word getLastWord() {
-//        String isRan=getPref(iWord.PREFS_NAME,iWord.IS_RANDOM,"true");
-//        if (isRan=="true") return iWord.wordList.get(random.nextInt(iWord.wordList.size()));
-//        else  return iWord.wordList.get((wordId++)%iWord.wordList.size());
 
         if (currentID <= startID) {
 
@@ -140,8 +161,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             UserWord.userWordHashMap.put(word.getID(), userWord);
 
         }
-
-
+        if (!db.isWordExist(userWord)) {
+            db.addUserWord(userWord);
+        }
         updateView(word);
 
         return word;
@@ -182,8 +204,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                     userWord.setIsFavourite(true);
                     favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
                 }
-//                favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
-
+                db.changeFav(userWord);
                 break;
             case R.id.title_bar_left_menu:
                 finishReciting();

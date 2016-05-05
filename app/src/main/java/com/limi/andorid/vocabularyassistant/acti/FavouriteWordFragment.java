@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.UserWord;
 import com.limi.andorid.vocabularyassistant.helper.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
@@ -26,6 +27,8 @@ public class FavouriteWordFragment extends Fragment {
     private static FavouriteWordFragment instance;
     private View parentView;
     private ListView listView;
+
+    private MySQLiteHandler db;
 
     public static FavouriteWordFragment getInstance() {
         if (instance == null) {
@@ -45,6 +48,7 @@ public class FavouriteWordFragment extends Fragment {
             }
             return parentView;
         }
+        db = new MySQLiteHandler(getActivity());
         parentView = inflater.inflate(R.layout.notebook_fragment, container, false);
         listView = (ListView) parentView.findViewById(R.id.listView1);
         initView();
@@ -79,14 +83,19 @@ public class FavouriteWordFragment extends Fragment {
     private ArrayList<Word> getCalendarData() {
         ArrayList<Word> wordList = new ArrayList<>();
         ArrayList<Word> words = WordImportHandler.threeKArrayList;
-
+        if (UserWord.userWordHashMap.size() == 0) {
+            ArrayList<UserWord> words1 = db.getUserWordData(MainActivity.currentUserID);
+            for (UserWord word : words1) {
+                UserWord.userWordHashMap.put(word.getWordID(), word);
+            }
+        }
         Iterator iterator = UserWord.userWordHashMap.entrySet().iterator();
 
         while (iterator.hasNext()) {
             Map.Entry<Integer, UserWord> mapEntry = (Map.Entry) iterator.next();
             Integer key = mapEntry.getKey();
             UserWord userWord = mapEntry.getValue();
-            if (userWord.isFavourite()) {
+            if (userWord.isFavourite() && userWord.getUserID() == MainActivity.currentUserID) {
                 Word word = words.get((userWord.getWordID()));
                 wordList.add(word);
                 wordFav.add(word.getID());

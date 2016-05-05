@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.app.AppConfig;
 import com.limi.andorid.vocabularyassistant.app.AppController;
-import com.limi.andorid.vocabularyassistant.helper.LoginSQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 
 import org.json.JSONException;
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private AppCompatButton login;
     private TextView signupView;
     private SessionManager session;
-    private LoginSQLiteHandler db;
+    private MySQLiteHandler db;
     private SharedPreferences sp;
 
 
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // SQLite database handler
-        db = new LoginSQLiteHandler(getApplicationContext());
+        db = new MySQLiteHandler(getApplicationContext());
 
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
                         session.setLogin(true);
 
                         // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
+                        Integer uid = jObj.getInt("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");

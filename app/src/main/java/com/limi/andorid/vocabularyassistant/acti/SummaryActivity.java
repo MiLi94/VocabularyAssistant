@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.helper.Word;
@@ -54,7 +55,7 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
             summaryList.add(WordImportHandler.threeKArrayList.get(i));
         }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.summarylist);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -78,7 +79,7 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     Intent intent = new Intent(getApplicationContext(), RecitingActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("nextStartID", endID++);
+                    bundle.putInt("nextStartID", ++endID);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
@@ -86,13 +87,29 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
 
                 break;
             case (R.id.quit):
+                quitActivity();
                 break;
             case (R.id.again):
+                Intent intent = new Intent(getApplicationContext(), RecitingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("nextStartID", startID);
+                Toast.makeText(getApplicationContext(), String.valueOf(startID), Toast.LENGTH_SHORT).show();
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
                 break;
             case (R.id.exercise):
                 break;
 
         }
 
+    }
+
+    private void quitActivity() {
+//        updateDate();
+        finish();
+    }
+
+    private void updateDate() {
     }
 }

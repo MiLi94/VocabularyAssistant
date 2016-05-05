@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * Created by limi on 16/5/4.
  */
-public class NormalTabLayoutFragmentAdapter extends FragmentPagerAdapter {
+public class NotebookTabLayoutFragmentAdapter extends FragmentPagerAdapter {
     private String[] tabTitles;
     private Fragment[] fragments;
 
-    public NormalTabLayoutFragmentAdapter(FragmentManager fm, Fragment[] fragments, String[] tabTitles) {
+    public NotebookTabLayoutFragmentAdapter(FragmentManager fm, Fragment[] fragments, String[] tabTitles) {
         super(fm);
         this.fragments = fragments;
         this.tabTitles = tabTitles;

@@ -20,7 +20,7 @@ public class MyNoteBookFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private NormalTabLayoutFragmentAdapter fragmentAdapter;
+    private NotebookTabLayoutFragmentAdapter fragmentAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +40,9 @@ public class MyNoteBookFragment extends Fragment {
     }
 
     private void initData() {
-        String[] tabTitles = {"Favourite", "Wrong Time"};
+        String[] tabTitles = {"Favourite", "Wrong Wrong"};
         Fragment[] fragments = {new FavouriteWordFragment(), new SettingFragment()};
-        this.fragmentAdapter = new NormalTabLayoutFragmentAdapter(this.getChildFragmentManager(), fragments, tabTitles);
+        this.fragmentAdapter = new NotebookTabLayoutFragmentAdapter(this.getChildFragmentManager(), fragments, tabTitles);
         this.viewPager.setAdapter(this.fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }

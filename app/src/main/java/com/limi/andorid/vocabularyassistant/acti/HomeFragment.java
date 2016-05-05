@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
         getSentenceOfToday();
 
 
+
     }
 
     @Override
@@ -75,7 +76,7 @@ public class HomeFragment extends Fragment {
         super.onStart();
         colorArcProgressBar.setCurrentValues(77);
         colorArcProgressBar.setDiameter(200);
-        getSentenceOfToday();
+//        getSentenceOfToday();
     }
 
     private void getSentenceOfToday() {

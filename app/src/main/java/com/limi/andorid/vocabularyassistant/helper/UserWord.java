@@ -1,5 +1,6 @@
 package com.limi.andorid.vocabularyassistant.helper;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -12,7 +13,7 @@ public class UserWord {
     private int wordID;
     private int userID;
     private int wrongTime = 0;
-    private Date date;
+    private String createDate;
     private boolean isFavourite = false;
     private String wordBase;
 
@@ -21,8 +22,27 @@ public class UserWord {
         this.wordID = wordID;
         this.userID = userID;
         this.wordBase = wordBase;
-        date = new Date();
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        createDate = df.format(date);
 
+    }
+
+    public UserWord(int wordID, int userID, String createDate, boolean isFavourite, int wrongTime, String wordBase) {
+        this.wordID = wordID;
+        this.userID = userID;
+        this.wrongTime = wrongTime;
+        this.createDate = createDate;
+        this.isFavourite = isFavourite;
+        this.wordBase = wordBase;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -108,5 +128,6 @@ public class UserWord {
     public void setWordBase(String wordBase) {
         this.wordBase = wordBase;
     }
+
 
 }

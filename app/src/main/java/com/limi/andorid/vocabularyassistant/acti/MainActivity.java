@@ -10,15 +10,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
+    public static int currentUserID;
     ResideMenu resideMenu;
     String titles[] = {"Home", "My Notebook", "Learning Trace", "Message", "Forms", "Settings"};
     int icon[] = {R.mipmap.icon_home, R.mipmap.icon_notebook, R.mipmap.icon_record2, R.mipmap.icon_message, R.mipmap.icon_forum, R.mipmap.icon_settings};
-
     ResideMenuItem item[] = new ResideMenuItem[titles.length];
+    private MySQLiteHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Button favBtn = (Button) findViewById(R.id.title_bar_right_menu);
         menuBtn.setOnClickListener(this);
         favBtn.setOnClickListener(this);
+        try {
+            InputStream inputStream = getAssets().open("threek.xml");
+            WordImportHandler.getDataFromXml(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        db = new MySQLiteHandler(getApplicationContext());
+        HashMap<String, String> userDetails = db.getUserDetails();
+        currentUserID = Integer.parseInt(userDetails.get("userID"));
         resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);

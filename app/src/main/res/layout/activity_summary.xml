@@ -81,7 +81,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/summarylist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/navi_switcher"
