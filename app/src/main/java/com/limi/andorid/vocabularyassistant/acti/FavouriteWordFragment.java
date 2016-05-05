@@ -91,8 +91,6 @@ public class FavouriteWordFragment extends Fragment {
                 wordList.add(word);
                 wordFav.add(word.getID());
             }
-
-
         }
         return wordList;
     }

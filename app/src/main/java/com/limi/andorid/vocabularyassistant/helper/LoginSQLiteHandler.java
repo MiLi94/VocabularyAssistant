@@ -13,9 +13,9 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-public class SQLiteHandler extends SQLiteOpenHelper {
+public class LoginSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final String TAG = SQLiteHandler.class.getSimpleName();
+    private static final String TAG = LoginSQLiteHandler.class.getSimpleName();
 
     // All Static variables
     // Database Version
@@ -34,7 +34,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_UID = "uid";
     private static final String KEY_CREATED_AT = "created_at";
 
-    public SQLiteHandler(Context context) {
+    public LoginSQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

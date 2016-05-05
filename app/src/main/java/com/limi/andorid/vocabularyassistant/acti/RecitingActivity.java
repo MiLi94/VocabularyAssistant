@@ -1,5 +1,6 @@
 package com.limi.andorid.vocabularyassistant.acti;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,6 +35,17 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciting);
+
+
+        int nextStart;
+        try {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            nextStart = bundle.getInt("nextStartID", -1);
+        } catch (Exception e) {
+            nextStart = -1;
+
+        }
         wordTextView = (TextView) findViewById(R.id.word);
         meaningTextView = (TextView) findViewById(R.id.meaning);
         phoneticTextView = (TextView) findViewById(R.id.phonetic);
@@ -53,8 +65,12 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         favourite.setOnClickListener(this);
         returnButton.setOnClickListener(this);
         unit = 0;
-        startID = unit * 10;
-        endID = unit * 10 + 9;
+        if (nextStart == -1) {
+            startID = 0;
+        } else {
+            startID = nextStart;
+        }
+        endID = nextStart + 9;
         userID = 1;
         init();
 
@@ -80,6 +96,15 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 //        else  return iWord.wordList.get((wordId++)%iWord.wordList.size());
         if (currentID >= endID) {
             //button set finish or review
+            Intent intent = new Intent(RecitingActivity.this, SummaryActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("startID", startID);
+            bundle.putInt("endID", endID);
+//                bundle.putIntegerArrayList("list", wordFav);
+            intent.putExtras(bundle);
+            this.startActivity(intent);
+
+            finishReciting();
         } else {
             currentID++;
         }

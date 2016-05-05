@@ -22,7 +22,7 @@ import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.app.AppConfig;
 import com.limi.andorid.vocabularyassistant.app.AppController;
 import com.limi.andorid.vocabularyassistant.helper.CharsetStingRequest;
-import com.limi.andorid.vocabularyassistant.helper.SQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.LoginSQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 
 import org.json.JSONException;
@@ -41,7 +41,7 @@ public class SignupActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
+    private LoginSQLiteHandler db;
 
 
     @Override
@@ -63,7 +63,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
+        db = new LoginSQLiteHandler(getApplicationContext());
 
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity

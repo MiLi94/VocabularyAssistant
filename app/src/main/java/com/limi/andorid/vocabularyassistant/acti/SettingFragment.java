@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.limi.andorid.vocabularyassistant.helper.SQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.LoginSQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private static SettingFragment instance;
     private View parentView;
     private ListView list;
-    private SQLiteHandler db;
+    private LoginSQLiteHandler db;
     private SessionManager session;
 
     public static SettingFragment getInstance() {
@@ -41,7 +41,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         list = (ListView) parentView.findViewById(R.id.listView);
         Button logout_button = (Button) parentView.findViewById(R.id.btn_logout);
         logout_button.setOnClickListener(this);
-        db = new SQLiteHandler(getActivity());
+        db = new LoginSQLiteHandler(getActivity());
 
         // session manager
         session = new SessionManager(getActivity());
