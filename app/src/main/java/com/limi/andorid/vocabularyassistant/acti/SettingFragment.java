@@ -13,9 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.SessionManager;
-import com.limi.andorid.vocabularyassistant.helper.UserWord;
 
 import java.util.ArrayList;
 
@@ -79,6 +79,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void logoutUser() {
         session.setLogin(false);
+        session.setKeyIsSelected(false);
 
         db.deleteUsers();
 //        db.deleteUserWord();

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.limi.andorid.vocabularyassistant.helper.Word;
+import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 public class ViewWord extends AppCompatActivity implements View.OnClickListener {
@@ -75,7 +75,7 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void initView(int wordCurrentID) {
-        Word word = WordImportHandler.threeKArrayList.get(wordCurrentID);
+        Word word = WordImportHandler.systemWordBaseArrayList.get(wordCurrentID);
         updateView(word);
     }
 
@@ -91,7 +91,7 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
         } else {
             currentIndex++;
             int id = FavouriteWordFragment.wordFav.get(currentIndex);
-            Word word = WordImportHandler.threeKArrayList.get(id);
+            Word word = WordImportHandler.systemWordBaseArrayList.get(id);
             updateView(word);
 
         }
@@ -104,7 +104,7 @@ public class ViewWord extends AppCompatActivity implements View.OnClickListener 
         } else {
             currentIndex--;
             int id = FavouriteWordFragment.wordFav.get(currentIndex);
-            Word word = WordImportHandler.threeKArrayList.get(id);
+            Word word = WordImportHandler.systemWordBaseArrayList.get(id);
             updateView(word);
 
         }

@@ -9,16 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
+import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
-import com.limi.andorid.vocabularyassistant.helper.UserWord;
-import com.limi.andorid.vocabularyassistant.helper.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.util.ArrayList;
 
 public class RecitingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    MySQLiteHandler db;
+    private MySQLiteHandler db;
     private TextView wordTextView;
     private TextView meaningTextView;
     private TextView phoneticTextView;
@@ -99,12 +99,12 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 
         Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
 
-        Word word = WordImportHandler.threeKArrayList.get(currentID);
+        Word word = WordImportHandler.systemWordBaseArrayList.get(currentID);
         if (UserWord.userWordHashMap.containsKey(currentID))
             userWord = UserWord.userWordHashMap.get(currentID);
         else {
-            userWord = new UserWord(word.getID(), userID, word.getWordBase());
-            UserWord.userWordHashMap.put(word.getID(), userWord);
+            userWord = new UserWord(word.getId(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getId(), userWord);
 
         }
         if (!db.isWordExist(userWord)) {
@@ -130,12 +130,12 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             currentID++;
         }
 
-        Word word = WordImportHandler.threeKArrayList.get(currentID);
+        Word word = WordImportHandler.systemWordBaseArrayList.get(currentID);
         if (UserWord.userWordHashMap.containsKey(currentID))
             userWord = UserWord.userWordHashMap.get(currentID);
         else {
-            userWord = new UserWord(word.getID(), userID, word.getWordBase());
-            UserWord.userWordHashMap.put(word.getID(), userWord);
+            userWord = new UserWord(word.getId(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getId(), userWord);
 
         }
         if (!db.isWordExist(userWord)) {
@@ -153,12 +153,12 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         } else {
             currentID--;
         }
-        Word word = WordImportHandler.threeKArrayList.get(currentID);
+        Word word = WordImportHandler.systemWordBaseArrayList.get(currentID);
         if (UserWord.userWordHashMap.containsKey(currentID))
             userWord = UserWord.userWordHashMap.get(currentID);
         else {
-            userWord = new UserWord(word.getID(), userID, word.getWordBase());
-            UserWord.userWordHashMap.put(word.getID(), userWord);
+            userWord = new UserWord(word.getId(), userID, word.getWordBase());
+            UserWord.userWordHashMap.put(word.getId(), userWord);
 
         }
         if (!db.isWordExist(userWord)) {

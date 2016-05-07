@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         favBtn.setOnClickListener(this);
         try {
             InputStream inputStream = getAssets().open("threek.xml");
-            WordImportHandler.getDataFromXml(inputStream);
+            WordImportHandler.getDataFromXml(inputStream, "GRE");
         } catch (IOException e) {
             e.printStackTrace();
         }

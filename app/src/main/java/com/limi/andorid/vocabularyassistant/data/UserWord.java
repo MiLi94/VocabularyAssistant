@@ -1,4 +1,4 @@
-package com.limi.andorid.vocabularyassistant.helper;
+package com.limi.andorid.vocabularyassistant.data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

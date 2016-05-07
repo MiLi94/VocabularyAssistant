@@ -1,5 +1,7 @@
 package com.limi.andorid.vocabularyassistant.helper;
 
+import com.limi.andorid.vocabularyassistant.data.Word;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,10 +18,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class WordImportHandler {
 
-    public static ArrayList<Word> threeKArrayList = new ArrayList<>();
+    public static ArrayList<Word> systemWordBaseArrayList = new ArrayList<>();
 
 
-    public static void getDataFromXml(InputStream is) {
+    public static void getDataFromXml(InputStream is, String wordbase) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -62,7 +64,7 @@ public class WordImportHandler {
                     }
                 }
                 Word word = new Word(wordName, trans, tags, "GRE threek Words", phonetic);
-                threeKArrayList.add(word);
+                systemWordBaseArrayList.add(word);
             }
         } catch (Exception e) {
             e.printStackTrace();

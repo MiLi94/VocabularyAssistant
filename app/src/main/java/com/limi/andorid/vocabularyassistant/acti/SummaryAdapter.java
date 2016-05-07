@@ -9,8 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.limi.andorid.vocabularyassistant.helper.UserWord;
-import com.limi.andorid.vocabularyassistant.helper.Word;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
+import com.limi.andorid.vocabularyassistant.data.Word;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
         Word w = wordArrayList.get(i);
         holder.wordTextView.setText(w.getWord());
         holder.meaningTextView.setText(w.getTrans());
-        final UserWord userWord = UserWord.userWordHashMap.get(w.getID());
+        final UserWord userWord = UserWord.userWordHashMap.get(w.getId());
         if (userWord.isFavourite()) {
             holder.favButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.star4));
         } else {

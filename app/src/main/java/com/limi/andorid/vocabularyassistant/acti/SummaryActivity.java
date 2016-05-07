@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.limi.andorid.vocabularyassistant.helper.Word;
+import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
         endID = bundle.getInt("endID");
 
         for (int i = startID; i <= endID; i++) {
-            summaryList.add(WordImportHandler.threeKArrayList.get(i));
+            summaryList.add(WordImportHandler.systemWordBaseArrayList.get(i));
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.summarylist);
@@ -106,10 +106,11 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void quitActivity() {
-//        updateDate();
+//        updateData();
         finish();
     }
 
-    private void updateDate() {
+    private void updateData() {
+
     }
 }

@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.limi.andorid.vocabularyassistant.data.UserWord;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -241,7 +243,7 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
     public void deleteUserWord() {
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
-        db.delete(TABLE_USER, null, null);
+//        db.delete(TABLE_USER, null, null);
         db.close();
 
         Log.d(TAG, "Deleted all user info from sqlite");

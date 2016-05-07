@@ -12,9 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
+import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
-import com.limi.andorid.vocabularyassistant.helper.UserWord;
-import com.limi.andorid.vocabularyassistant.helper.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class FavouriteWordFragment extends Fragment {
             @Override
 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = String.valueOf(arrayAdapter.getItem(i).getID());
+                String s = String.valueOf(arrayAdapter.getItem(i).getId());
 
 //                Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(parentView.getContext(), ViewWord.class);
@@ -82,7 +82,7 @@ public class FavouriteWordFragment extends Fragment {
 
     private ArrayList<Word> getCalendarData() {
         ArrayList<Word> wordList = new ArrayList<>();
-        ArrayList<Word> words = WordImportHandler.threeKArrayList;
+        ArrayList<Word> words = WordImportHandler.systemWordBaseArrayList;
         if (UserWord.userWordHashMap.size() == 0) {
             ArrayList<UserWord> words1 = db.getUserWordData(MainActivity.currentUserID);
             for (UserWord word : words1) {
@@ -98,7 +98,7 @@ public class FavouriteWordFragment extends Fragment {
             if (userWord.isFavourite() && userWord.getUserID() == MainActivity.currentUserID) {
                 Word word = words.get((userWord.getWordID()));
                 wordList.add(word);
-                wordFav.add(word.getID());
+                wordFav.add(word.getId());
             }
         }
         return wordList;
