@@ -29,6 +29,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     private UserWord userWord;
     private int nextStart;
     private int unit;
+    private int list;
     private int startID;
     private int currentID;
     private int userID;
@@ -207,7 +208,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                 db.changeFav(userWord);
                 break;
             case R.id.title_bar_left_menu:
-                finishReciting();
+//                finishReciting();
+                Intent intent = new Intent(getApplicationContext(), AddingTaskActivity.class);
+                startActivity(intent);
                 break;
         }
     }

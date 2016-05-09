@@ -35,7 +35,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText nameView;
     private EditText email;
     private EditText password;
-    private AppCompatButton signupButton;
+    private AppCompatButton signUpButton;
     private SharedPreferences sp;
     private ProgressDialog pDialog;
     private SessionManager session;
@@ -50,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
         nameView = (EditText) findViewById(R.id.input_name);
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
-        signupButton = (AppCompatButton) findViewById(R.id.btn_sign_up);
+        signUpButton = (AppCompatButton) findViewById(R.id.btn_sign_up);
         TextView loginView = (TextView) findViewById(R.id.link_login);
 
         pDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dialog);
@@ -70,13 +70,14 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup_check();
             }
         });
 
+        assert loginView != null;
         loginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,13 +117,13 @@ public class SignupActivity extends AppCompatActivity {
 
     private void signup_success() {
         Toast.makeText(getBaseContext(), "Sign up succeed", Toast.LENGTH_LONG).show();
-        signupButton.setEnabled(true);
+        signUpButton.setEnabled(true);
         finish();
     }
 
     private void signup_fail() {
         Toast.makeText(getBaseContext(), "Sign up failed", Toast.LENGTH_LONG).show();
-        signupButton.setEnabled(true);
+        signUpButton.setEnabled(true);
     }
 
     public boolean check_validation(final String nameText, final String emailText, final String passwordText) {

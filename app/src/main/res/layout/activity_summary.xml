@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context="com.limi.andorid.vocabularyassistant.acti.SummaryActivity">
-    tools:context="com.limi.andorid.vocabularyassistant.act.Summary">
 
     <LinearLayout
         android:id="@+id/layout_top"
@@ -87,6 +85,7 @@
             android:layout_above="@id/navi_switcher"
             android:layout_alignParentTop="true"
             tools:context="com.limi.andorid.vocabularyassistant.act.Summary" />
+
     </RelativeLayout>
 
 </LinearLayout>

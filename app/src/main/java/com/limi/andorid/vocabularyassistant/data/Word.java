@@ -9,8 +9,8 @@ import java.util.HashMap;
  */
 public class Word {
 
+    public static HashMap<String, Integer> idWordBase;
     private static int lastID;
-    private static HashMap<String, Integer> idWordBase;
     private final String word;
     private final String trans;
     private final String tags;
@@ -20,11 +20,11 @@ public class Word {
     private int unit;
     private int list;
 
-    public Word(String word, String trans, String tags, String wordbase, String phonetic) {
+    public Word(String word, String trans, String tags, String wordBase, String phonetic) {
         this.word = word;
         this.trans = trans;
         this.tags = tags;
-        this.wordBase = wordbase;
+        this.wordBase = wordBase;
         this.id = lastID;
         this.phonetic = phonetic;
         lastID++;

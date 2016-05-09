@@ -51,6 +51,9 @@
         <activity
             android:name=".acti.SummaryActivity"
             android:theme="@style/AppTheme_Dark" />
+        <activity
+            android:name=".acti.AddingTaskActivity"
+            android:theme="@style/AppTheme_Dark" />
     </application>
 
 </manifest>

@@ -3,20 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.limi.andorid.vocabularyassistant.act.Mission">
+    android:orientation="vertical"
+    tools:context="com.limi.andorid.vocabularyassistant.acti.AddingTaskActivity">
+
 
     <LinearLayout
         android:id="@+id/layout_top"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         android:orientation="vertical">
 
+
         <FrameLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/back"
+                android:id="@+id/undo_button"
                 android:layout_width="50dp"
                 android:layout_height="35dp"
                 android:layout_gravity="left|center_vertical"
@@ -24,28 +28,40 @@
                 android:background="@mipmap/undo1" />
 
             <TextView
+                android:id="@+id/title_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="Anytime Reciting"
+                android:text="Adding Task Card"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/add"
+                android:id="@+id/add_button"
                 android:layout_width="50dp"
                 android:layout_height="35dp"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="0dp"
+                android:layout_marginLeft="0dp"
                 android:background="@mipmap/add" />
+
         </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.limi.andorid.vocabularyassistant.act.Summary" />
+            android:layout_height="2dp"
+            android:background="#ebebeb" />
 
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp" />
+    <!--<TwoLineListItem-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></TwoLineListItem>-->
+
+
 </LinearLayout>
