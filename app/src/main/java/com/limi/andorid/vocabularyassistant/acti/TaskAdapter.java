@@ -1,19 +1,21 @@
 package com.limi.andorid.vocabularyassistant.acti;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Task;
-import com.limi.andorid.vocabularyassistant.data.UserWord;
-import com.limi.andorid.vocabularyassistant.data.Word;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by limi on 16/5/10.
@@ -34,55 +36,75 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Task task = taskArrayList.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
-    }
+        Collections.sort(taskArrayList, new Comparator<Task>() {
+            @Override
+            public int compare(Task lhs, Task rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        });
+        final Task task = taskArrayList.get(position);
+        holder.listTextView.setText("Anytime reciting task " + position);
+        String bookTitle = "";
+        switch (task.getBookId()) {
+            case 0:
+                bookTitle += "GRE";
+                break;
+            case 1:
+                bookTitle += "TOEFL";
+                break;
+            case 2:
+                bookTitle += "IETLS";
+                break;
 
-    @Override
-    public void onBindViewHolder(final SummaryAdapter.ViewHolder holder, int i) {
-        Word w = wordArrayList.get(i);
-        holder.wordTextView.setText(w.getWord());
-        holder.meaningTextView.setText(w.getTrans());
-        final UserWord userWord = UserWord.userWordHashMap.get(w.getId());
-        if (userWord.isFavourite()) {
-            holder.favButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.star4));
-        } else {
-            holder.favButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.star1));
         }
-        holder.favButton.setOnClickListener(new View.OnClickListener() {
+        holder.bookTextView.setText(bookTitle);
+        String listText = "List: " + task.getStartList() + " Unit: " + task.getStartUnit() + ",List: " + task.getEndList() + " Unit: " + task.getEndUnit();
+        holder.listTextView.setText(listText);
+        holder.buttonDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (userWord.isFavourite()) {
-                    userWord.setIsFavourite(false);
-                    holder.favButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.star1));
-                } else {
-                    userWord.setIsFavourite(true);
-                    holder.favButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.star4));
-                }
+                taskArrayList.remove(position);
+                notifyDataSetChanged();
 
             }
         });
-
+        holder.buttonStr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int startID = (task.getStartList() - 1) * 100 + (task.getStartUnit() - 1) * 10;
+                SummaryActivity.finishID = (task.getEndList() - 1) * 100 + (task.getEndUnit()) * 10 - 1;
+                Intent intent = new Intent(mContext, RecitingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("nextStartID", startID);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
+
 
     @Override
     public int getItemCount() {
-        return wordArrayList == null ? 0 : wordArrayList.size();
+        return taskArrayList == null ? 0 : taskArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView wordTextView;
-        public TextView meaningTextView;
-        public ImageButton favButton;
+        public TextView anytimeRecite;
+        public TextView bookTextView;
+        public TextView listTextView;
+        public Button buttonStr;
+        public Button buttonDel;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            wordTextView = (TextView) itemView.findViewById(R.id.word);
-            meaningTextView = (TextView) itemView.findViewById(R.id.meaning);
-            favButton = (ImageButton) itemView.findViewById(R.id.wordFav);
+            anytimeRecite = (TextView) itemView.findViewById(R.id.anytime_reciting_list);
+            bookTextView = (TextView) itemView.findViewById(R.id.bookset);
+            listTextView = (TextView) itemView.findViewById(R.id.listset);
+            buttonStr = (Button) itemView.findViewById(R.id.start_btn);
+            buttonDel = (Button) itemView.findViewById(R.id.delete_btn);
 
         }
     }

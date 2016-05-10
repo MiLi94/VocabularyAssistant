@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.Task;
 import com.limi.andorid.vocabularyassistant.dialog.BookPicker;
 import com.limi.andorid.vocabularyassistant.dialog.ListUnitPicker;
 
@@ -34,6 +37,8 @@ public class AddingTaskActivity extends AppCompatActivity {
     private int endUnitValue;
     private TextView[] textViews;
 
+    private Button cancelBtn;
+    private Button addBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,24 @@ public class AddingTaskActivity extends AppCompatActivity {
         listView.setAdapter(myListViewAdapter);
         listUnitPickerDialog = new ListUnitPickerDialog(this, startListValue, startUnitValue);
         bookDialog = new BookDialog(this, currentBookValue);
+        cancelBtn = (Button) findViewById(R.id.undo_button);
+        addBtn = (Button) findViewById(R.id.finish_btn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Task task = new Task(startListValue, endListValue, startUnitValue, endUnitValue, currentBookValue);
+                Intent intent = new Intent(getApplicationContext(), MissionActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class SummaryActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static int finishID = 100;
     private int startID;
     private int endID;
     private RecyclerView mRecyclerView;
@@ -27,9 +28,7 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
     private Button exitBtn;
     private ImageButton reciteAgain;
     private ImageButton test;
-
     private ArrayList<Word> summaryList = new ArrayList<>();
-    private int finishID = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

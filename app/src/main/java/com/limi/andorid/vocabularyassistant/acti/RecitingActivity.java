@@ -209,7 +209,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.title_bar_left_menu:
 //                finishReciting();
-                Intent intent = new Intent(getApplicationContext(), AddingTaskActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MissionActivity.class);
                 startActivity(intent);
                 break;
         }

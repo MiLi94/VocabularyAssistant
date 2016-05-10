@@ -45,7 +45,7 @@
                         android:textSize="20sp" />
 
                     <Button
-                        android:id="@+id/delete"
+                        android:id="@+id/delete_btn"
                         android:layout_width="40dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
@@ -53,18 +53,30 @@
                         android:gravity="right|top" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/scale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/anytime_reciting_list"
+                    <TextView
+                        android:id="@+id/bookset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center_vertical"
-                    android:text="List 1 Unit 1 - List 1 Unit 10"
-                    android:textSize="15sp" />
+
+                        android:gravity="center_vertical"
+                        android:text="GRE"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/listset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:text="List 1 Unit 1 - List 1 Unit 10"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -82,7 +94,7 @@
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/start_btn"
                         android:layout_width="225dp"
                         android:layout_height="78dp"
                         android:layout_centerHorizontal="true"

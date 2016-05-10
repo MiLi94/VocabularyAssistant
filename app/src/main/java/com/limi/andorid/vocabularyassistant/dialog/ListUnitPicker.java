@@ -48,7 +48,9 @@ public class ListUnitPicker extends FrameLayout {
         OnValueChangeListener mOnListChangedListener = new OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
+                if (newVal == 0) {
+                    newVal = 1;
+                }
                 list = newVal;
 
                 if (list == maxList) {
@@ -79,6 +81,9 @@ public class ListUnitPicker extends FrameLayout {
         OnValueChangeListener mOnUnitChangedListener = new OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (newVal == 0) {
+                    newVal = 1;
+                }
                 unit = newVal;
                 onDataChanged();
 
@@ -90,6 +95,7 @@ public class ListUnitPicker extends FrameLayout {
 
     private void updateUnitControl() {
         Log.d("MaxUnit", String.valueOf(maxUnit));
+        unitSpinner.setDisplayedValues(null);
         String[] sUnit = new String[maxUnit - minUnit + 1];
         unitSpinner.setMinValue(minUnit);
         unitSpinner.setMaxValue(maxUnit);

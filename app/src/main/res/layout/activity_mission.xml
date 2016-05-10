@@ -33,7 +33,7 @@
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/add"
+                android:id="@+id/add_btn"
                 android:layout_width="50dp"
                 android:layout_height="35dp"
                 android:layout_gravity="right|center_vertical"
@@ -42,7 +42,7 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/anytime_reciting_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.limi.andorid.vocabularyassistant.act.Summary" />
