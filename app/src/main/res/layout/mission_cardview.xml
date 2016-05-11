@@ -80,14 +80,15 @@
 
                 <ProgressBar
                     android:id="@+id/progressBar"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/scale"
                     android:max="100"
-                    android:progress="18" />
+                    android:progress="18"
+                    android:progressDrawable="@drawable/progressbar" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

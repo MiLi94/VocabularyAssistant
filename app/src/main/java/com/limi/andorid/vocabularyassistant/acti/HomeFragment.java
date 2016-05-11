@@ -49,9 +49,7 @@ public class HomeFragment extends Fragment {
         parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
-                Intent i = new Intent(getActivity(),
-                        RecitingActivity.class);
+                Intent i = new Intent(getActivity(), MissionActivity.class);
                 startActivity(i);
             }
         });
@@ -64,9 +62,14 @@ public class HomeFragment extends Fragment {
         textView = (TextView) parentView.findViewById(R.id.todayMeaning);
         colorArcProgressBar.setCurrentValues(77);
         colorArcProgressBar.setDiameter(200);
-//        getSentenceOfToday();
+        colorArcProgressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), RecitingActivity.class);
+                startActivity(i);
+            }
+        });
         getSentenceOfToday();
-
 
 
     }
@@ -76,7 +79,7 @@ public class HomeFragment extends Fragment {
         super.onStart();
         colorArcProgressBar.setCurrentValues(77);
         colorArcProgressBar.setDiameter(200);
-//        getSentenceOfToday();
+        getSentenceOfToday();
     }
 
     private void getSentenceOfToday() {
@@ -104,21 +107,11 @@ public class HomeFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.i(TAG, error.getMessage());
+//                Log.i("Daily Sentence Error", error.getMessage());
             }
         });
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
     }
-
-//    public class SentenceResponeLinster<String> implements Response.Listener<String>{
-//
-//
-//        @Override
-//        public void onResponse(java.lang.String response) {
-//
-//        }
-//    }
-
 
 }

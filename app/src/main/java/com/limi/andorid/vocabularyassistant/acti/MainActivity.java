@@ -8,8 +8,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 import com.special.ResideMenu.ResideMenu;
@@ -17,30 +19,69 @@ import com.special.ResideMenu.ResideMenuItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     public static int currentUserID;
-    ResideMenu resideMenu;
+    public static int wordStartID;
+    public static int wordEndID;
+    public static int bookID;
     String titles[] = {"Home", "My Notebook", "Learning Trace", "Message", "Forms", "Settings"};
     int icon[] = {R.mipmap.icon_home, R.mipmap.icon_notebook, R.mipmap.icon_record2, R.mipmap.icon_message, R.mipmap.icon_forum, R.mipmap.icon_settings};
     ResideMenuItem item[] = new ResideMenuItem[titles.length];
+    private ResideMenu resideMenu;
     private MySQLiteHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bookID = 1;
+
 
         Button menuBtn = (Button) findViewById(R.id.title_bar_left_menu);
         Button favBtn = (Button) findViewById(R.id.title_bar_right_menu);
         menuBtn.setOnClickListener(this);
         favBtn.setOnClickListener(this);
         try {
-            InputStream inputStream = getAssets().open("threek.xml");
-            WordImportHandler.getDataFromXml(inputStream, "GRE");
+            InputStream inputStream1 = getAssets().open("threek.xml");
+            WordImportHandler.getDataFromXml(inputStream1, "GRE threek Words");
+            inputStream1.close();
+
+            InputStream inputStream2 = getAssets().open("toefl.xml");
+            WordImportHandler.getDataFromXml(inputStream2, "TOEFL");
+            inputStream2.close();
+
+            Toast.makeText(getApplicationContext(), WordImportHandler.systemWordBaseArrayList.get(Word.getLastID() - 1).toString(), Toast.LENGTH_LONG).show();
+
+            InputStream inputStream3 = getAssets().open("ietls.xml");
+            WordImportHandler.getDataFromXml(inputStream3, "IETLS");
+            inputStream3.close();
+            Word.setLastID();
+
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+
+        ArrayList<Word> words = WordImportHandler.systemWordBaseArrayList;
+
+        switch (bookID) {
+
+            case 0:
+                wordStartID = 0;
+                wordEndID = Word.idWordBase.get("GRE threek Words") - 1;
+                break;
+            case 1:
+                wordStartID = Word.idWordBase.get("GRE threek Words");
+                wordEndID = Word.idWordBase.get("TOEFL") - 1;
+                break;
+            case 2:
+                wordStartID = Word.idWordBase.get("TOEFL");
+                wordEndID = Word.idWordBase.get("IETLS") - 1;
+                break;
         }
         db = new MySQLiteHandler(getApplicationContext());
         HashMap<String, String> userDetails = db.getUserDetails();
@@ -54,7 +95,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         for (int i = 0; i < titles.length; i++) {
             item[i] = new ResideMenuItem(this, icon[i], titles[i]);
             item[i].setOnClickListener(this);
-            resideMenu.addMenuItem(item[i], ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
+            resideMenu.addMenuItem(item[i], ResideMenu.DIRECTION_LEFT);
         }
         if (savedInstanceState == null)
             changeFragment(new HomeFragment());
@@ -96,13 +137,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             resideMenu.closeMenu();
         }
 
-
     }
 
     @Override
     public void onBackPressed() {
         // Disable going back to the LoginActivity
         moveTaskToBack(true);
+
+
     }
 
 
@@ -118,4 +160,5 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
 }

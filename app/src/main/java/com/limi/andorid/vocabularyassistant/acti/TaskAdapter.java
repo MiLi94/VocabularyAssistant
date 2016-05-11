@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Task;
+import com.limi.andorid.vocabularyassistant.data.Word;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
+
         Collections.sort(taskArrayList, new Comparator<Task>() {
             @Override
             public int compare(Task lhs, Task rhs) {
@@ -57,7 +59,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             case 2:
                 bookTitle += "IETLS";
                 break;
-
         }
         holder.bookTextView.setText(bookTitle);
         String listText = "List: " + task.getStartList() + " Unit: " + task.getStartUnit() + ",List: " + task.getEndList() + " Unit: " + task.getEndUnit();
@@ -73,8 +74,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.buttonStr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int startID = (task.getStartList() - 1) * 100 + (task.getStartUnit() - 1) * 10;
-                SummaryActivity.finishID = (task.getEndList() - 1) * 100 + (task.getEndUnit()) * 10 - 1;
+                int baseID = 0;
+                switch (task.getBookId()) {
+                    case 0:
+                        baseID = 0;
+                        break;
+                    case 1:
+                        baseID = Word.idWordBase.get("GRE threek Words");
+                        break;
+                    case 2:
+                        baseID = Word.idWordBase.get("TOEFL");
+                        break;
+                }
+                int startID = baseID + (task.getStartList() - 1) * 100 + (task.getStartUnit() - 1) * 10;
+                SummaryActivity.finishID = baseID + (task.getEndList() - 1) * 100 + (task.getEndUnit()) * 10 - 1;
                 Intent intent = new Intent(mContext, RecitingActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("nextStartID", startID);

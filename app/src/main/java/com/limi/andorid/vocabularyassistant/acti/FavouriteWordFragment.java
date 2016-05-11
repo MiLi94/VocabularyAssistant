@@ -59,7 +59,7 @@ public class FavouriteWordFragment extends Fragment {
         final ArrayAdapter<Word> arrayAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
-                getCalendarData());
+                getData());
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -80,7 +80,7 @@ public class FavouriteWordFragment extends Fragment {
         });
     }
 
-    private ArrayList<Word> getCalendarData() {
+    private ArrayList<Word> getData() {
         ArrayList<Word> wordList = new ArrayList<>();
         ArrayList<Word> words = WordImportHandler.systemWordBaseArrayList;
         if (UserWord.userWordHashMap.size() == 0) {

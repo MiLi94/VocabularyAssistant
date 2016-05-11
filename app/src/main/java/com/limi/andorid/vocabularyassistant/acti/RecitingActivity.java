@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,12 +91,20 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             if (words1.size() == 0) {
                 startID = 0;
             } else {
-                startID = words1.get(words1.size() - 1).getWordID() + 1;
-
+                int lastID = words1.get(words1.size() - 1).getWordID();
+                if (MainActivity.wordStartID > lastID) {
+                    startID = MainActivity.wordStartID;
+                } else {
+                    startID = lastID + 1;
+                }
             }
 
         }
+
         endID = startID + 9;
+        if (endID >= MainActivity.wordEndID) {
+            endID = MainActivity.wordEndID;
+        }
         currentID = startID;
 
         Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
@@ -114,7 +123,6 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         updateView(word);
     }
 
-
     public Word getNextWord() {
         if (currentID >= endID) {
             //button set finish or review
@@ -122,10 +130,8 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
             Bundle bundle = new Bundle();
             bundle.putInt("startID", startID);
             bundle.putInt("endID", endID);
-//                bundle.putIntegerArrayList("list", wordFav);
             intent.putExtras(bundle);
             this.startActivity(intent);
-
             finishReciting();
         } else {
             currentID++;
@@ -149,9 +155,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 
     public Word getLastWord() {
 
-        if (currentID <= startID) {
-
-        } else {
+        if (currentID > startID) {
             currentID--;
         }
         Word word = WordImportHandler.systemWordBaseArrayList.get(currentID);
@@ -175,14 +179,15 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         phoneticTextView.setText(word.getPhonetic());
         meaningTextView.setText(word.getTrans());
         if (userWord.isFavourite()) {
-//            userWord.setFavourite();
             favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
 
         } else {
-//            userWord.setFavourite();
             favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star3));
-
         }
+
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_recite);
+        progressBar.setMax(endID - startID + 1);
+        progressBar.setProgress(currentID - startID + 1);
 
     }
 
@@ -216,10 +221,6 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void finishReciting() {
-
-
         finish();
     }
 }
-
-

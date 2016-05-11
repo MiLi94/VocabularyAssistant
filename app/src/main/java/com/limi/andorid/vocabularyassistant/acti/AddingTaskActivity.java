@@ -28,9 +28,9 @@ import java.util.Map;
 
 public class AddingTaskActivity extends AppCompatActivity {
 
+    public static int currentBookValue;
     private int startListValue;
     private int startUnitValue;
-    private int currentBookValue;
     private ListUnitPickerDialog listUnitPickerDialog;
     private BookDialog bookDialog;
     private int endListValue;
@@ -60,6 +60,7 @@ public class AddingTaskActivity extends AppCompatActivity {
         listView.setAdapter(myListViewAdapter);
         listUnitPickerDialog = new ListUnitPickerDialog(this, startListValue, startUnitValue);
         bookDialog = new BookDialog(this, currentBookValue);
+
         cancelBtn = (Button) findViewById(R.id.undo_button);
         addBtn = (Button) findViewById(R.id.finish_btn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +90,8 @@ public class AddingTaskActivity extends AppCompatActivity {
         startUnitValue = listUnitPickerDialog.getUnitValue();
     }
 
-    public void showBookDiaglog() {
+    public void showBookDialog() {
         bookDialog.show();
-
         currentBookValue = bookDialog.getBookValue();
 
     }
@@ -149,7 +149,7 @@ public class AddingTaskActivity extends AppCompatActivity {
                     switch (position) {
                         case 0:
                             textViews[0] = finalTvSecond_part;
-                            showBookDiaglog();
+                            showBookDialog();
                             break;
                         case 1:
                             textViews[1] = finalTvSecond_part;
@@ -178,7 +178,6 @@ public class AddingTaskActivity extends AppCompatActivity {
         private ListUnitPicker listUnitPicker;
         private int listValue = 1;
         private int unitValue = 1;
-        private int book = 0;
         private int position;
 
         public ListUnitPickerDialog(Context context, int list1, int unit1) {
@@ -229,6 +228,10 @@ public class AddingTaskActivity extends AppCompatActivity {
         public void setValue(int value) {
             this.position = value;
         }
+
+        public void setListUnitPicker(int book) {
+            listUnitPicker.bookSelector(book);
+        }
     }
 
     class BookDialog extends AlertDialog implements DialogInterface.OnClickListener {
@@ -244,7 +247,7 @@ public class AddingTaskActivity extends AppCompatActivity {
             bookPicker.setOnDataChangerListener(new BookPicker.onValueChangeListener() {
                 @Override
                 public void onDataChange(BookPicker view, int book) {
-                    bookValue = book;
+                    bookValue = BookPicker.book;
                 }
 
             });
@@ -267,6 +270,9 @@ public class AddingTaskActivity extends AppCompatActivity {
                     break;
 
             }
+            listUnitPickerDialog.setListUnitPicker(bookValue);
+            currentBookValue = bookValue;
+
         }
 
         public int getBookValue() {

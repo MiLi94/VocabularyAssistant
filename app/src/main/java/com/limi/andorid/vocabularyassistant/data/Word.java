@@ -9,21 +9,19 @@ import java.util.HashMap;
  */
 public class Word {
 
-    public static HashMap<String, Integer> idWordBase;
+    public static HashMap<String, Integer> idWordBase = new HashMap<>();
     private static int lastID;
     private final String word;
     private final String trans;
-    private final String tags;
     private final String phonetic;
     private final String wordBase;
     private int id;
     private int unit;
     private int list;
 
-    public Word(String word, String trans, String tags, String wordBase, String phonetic) {
+    public Word(String word, String trans, String wordBase, String phonetic) {
         this.word = word;
         this.trans = trans;
-        this.tags = tags;
         this.wordBase = wordBase;
         this.id = lastID;
         this.phonetic = phonetic;
@@ -42,8 +40,7 @@ public class Word {
     }
 
     public static void setLastID() {
-        idWordBase.put(WordImportHandler.systemWordBaseArrayList.get(lastID - 1).getWordBase(), lastID - 1);
-        lastID = (lastID / 1000) * 1000 + 1;
+        idWordBase.put(WordImportHandler.systemWordBaseArrayList.get(lastID - 1).getWordBase(), lastID);
     }
 
     public String getWord() {
@@ -52,10 +49,6 @@ public class Word {
 
     public String getTrans() {
         return trans;
-    }
-
-    public String getTags() {
-        return tags;
     }
 
     public String getPhonetic() {

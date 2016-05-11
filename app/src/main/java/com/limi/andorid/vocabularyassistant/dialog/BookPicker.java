@@ -3,6 +3,7 @@ package com.limi.andorid.vocabularyassistant.dialog;
 import android.content.Context;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 
@@ -11,14 +12,12 @@ import com.limi.andorid.vocabularyassistant.R;
  */
 public class BookPicker extends FrameLayout {
 
+    public static int book;
     private NumberPicker bookSpinner;
-
-    private int book;
-
-
     private onValueChangeListener mOnValueChangeListener;
 
-    public BookPicker(Context context, int listOld) {
+
+    public BookPicker(final Context context, int listOld) {
         super(context);
 
 
@@ -38,6 +37,7 @@ public class BookPicker extends FrameLayout {
 
                 book = newVal;
                 onDataChanged();
+                Toast.makeText(context, String.valueOf(book), Toast.LENGTH_LONG).show();
 
             }
         };

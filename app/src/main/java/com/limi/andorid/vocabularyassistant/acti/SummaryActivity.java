@@ -1,5 +1,8 @@
 package com.limi.andorid.vocabularyassistant.acti;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +101,38 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case (R.id.exercise):
+                Dialog dialog = new AlertDialog.Builder(this).setTitle("Reviewing Type")
+                        .setSingleChoiceItems(new String[]{"Meaning Test", "Spelling Test"}, 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        Intent meaningIntent = new Intent(getApplicationContext(), MeaningReviewActivity.class);
+                                        Bundle meaningBundle = new Bundle();
+                                        meaningBundle.putInt("StartID", startID);
+                                        meaningBundle.putInt("EndID", endID);
+//                                        Toast.makeText(getApplicationContext(), String.valueOf(startID), Toast.LENGTH_SHORT).show();
+                                        meaningIntent.putExtras(meaningBundle);
+                                        startActivityForResult(meaningIntent, 0, meaningBundle);
+                                        break;
+                                    case 1:
+                                        Intent exerciseIntent = new Intent(getApplicationContext(), SpellingReviewActivity.class);
+                                        Bundle exerciseBundle = new Bundle();
+                                        exerciseBundle.putInt("StartID", startID);
+                                        exerciseBundle.putInt("EndID", endID);
+//                                        Toast.makeText(getApplicationContext(), String.valueOf(startID), Toast.LENGTH_SHORT).show();
+                                        exerciseIntent.putExtras(exerciseBundle);
+                                        startActivityForResult(exerciseIntent, 0, exerciseBundle);
+                                        break;
+                                }
+                                dialog.dismiss();
+
+                            }
+
+                        })
+                        .setNegativeButton("CANCEL", null).show();
+
+//                finish();
                 break;
 
         }
