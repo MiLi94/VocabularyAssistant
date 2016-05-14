@@ -122,7 +122,7 @@ public class SummaryActivity extends AppCompatActivity implements View.OnClickLi
                                         exerciseBundle.putInt("EndID", endID);
 //                                        Toast.makeText(getApplicationContext(), String.valueOf(startID), Toast.LENGTH_SHORT).show();
                                         exerciseIntent.putExtras(exerciseBundle);
-                                        startActivityForResult(exerciseIntent, 0, exerciseBundle);
+                                        startActivityForResult(exerciseIntent, 1, exerciseBundle);
                                         break;
                                 }
                                 dialog.dismiss();

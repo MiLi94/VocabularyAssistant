@@ -109,10 +109,6 @@ public class UserWord {
         this.wrongTime = wrongTime;
     }
 
-    public void wrongTimeIncrease() {
-        wrongTime++;
-    }
-
     public boolean isFavourite() {
         return isFavourite;
     }

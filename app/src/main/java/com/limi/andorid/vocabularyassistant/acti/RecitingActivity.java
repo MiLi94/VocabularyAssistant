@@ -16,6 +16,8 @@ import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RecitingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -82,19 +84,60 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
 
         if (nextStart == -1) {
             ArrayList<UserWord> words1 = db.getUserWordData(userID);
+
             if (UserWord.userWordHashMap.size() == 0) {
 
                 for (UserWord word : words1) {
+
                     UserWord.userWordHashMap.put(word.getWordID(), word);
                 }
             }
             if (words1.size() == 0) {
                 startID = 0;
             } else {
-                int lastID = words1.get(words1.size() - 1).getWordID();
+                Collections.sort(words1, new Comparator<UserWord>() {
+                    @Override
+                    public int compare(UserWord lhs, UserWord rhs) {
+                        return lhs.getWordID() - rhs.getWordID();
+                    }
+
+                });
+                int lastID = 0;
+                boolean isCustomized = false;
+                for (int i = 0; i < words1.size(); i++) {
+
+                    UserWord userWord = words1.get(i);
+                    int j = i + 1;
+                    if (j < words1.size()) {
+                        UserWord userWord1 = words1.get(j);
+                        if ((userWord.getWordID() + 1) != userWord1.getWordID()) {
+                            isCustomized = true;
+                            if (userWord.getWordID() <= Word.idWordBase.get("GRE threek Words") - 1 && MainActivity.bookID == 0) {
+                                lastID = userWord.getWordID();
+                                break;
+                            } else if (userWord.getWordID() <= Word.idWordBase.get("TOEFL") - 1 && MainActivity.bookID == 1) {
+                                lastID = userWord.getWordID();
+                                break;
+                            } else if (userWord.getWordID() <= Word.idWordBase.get("IETLS") - 1 && MainActivity.bookID == 2) {
+                                lastID = userWord.getWordID();
+                                break;
+                            }
+                        }
+                    } else {
+
+                    }
+
+
+                }
+                if (!isCustomized) {
+                    lastID = words1.get(words1.size() - 1).getWordID();
+                }
+                //Word 1 : luanxi bei
+                //Word
                 if (MainActivity.wordStartID > lastID) {
                     startID = MainActivity.wordStartID;
                 } else {
+
                     startID = lastID + 1;
                 }
             }

@@ -138,6 +138,38 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
 
     }
 
+    public void increaseWrongTime(UserWord word) {
+
+        String sUserID = String.valueOf(word.getUserID());
+        String sWordID = String.valueOf(word.getWordID());
+
+        String selectQuery = "SELECT " + KEY_WRONG_TIME + " FROM " + TABLE_USERWORD + " WHERE " + KEY_WORD_ID + " = ?" + " AND " + KEY_USER_ID + " = ?";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sWordID, sUserID});
+        int wrongTime = -1;
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            wrongTime = cursor.getInt(0);
+        }
+        wrongTime++;
+
+        cursor.close();
+
+        String updateQuery = "UPDATE " + TABLE_USERWORD + " SET " + KEY_WRONG_TIME + " = ? " + " WHERE " + TABLE_USERWORD + "." + KEY_WORD_ID + " = ? AND " + TABLE_USERWORD + "." + KEY_USER_ID + " = ?";
+
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_WRONG_TIME, wrongTime);
+        String[] args = {sWordID, sUserID};
+        db.update(TABLE_USERWORD, cv, "wordID = ? AND userID = ?", args);
+//        Cursor cursor1 = db.rawQuery(updateQuery, new String[]{String.valueOf(favourite), sWordID, sUserID});
+//        cursor1.close();
+
+        db.close();
+
+    }
+
     public void changeFav(UserWord word) {
 
         String sUserID = String.valueOf(word.getUserID());
@@ -235,6 +267,98 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
         Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
 
         return userWordArrayList;
+    }
+
+    public int getUserWordCount(int userID) {
+        String sUserID = String.valueOf(userID);
+        ArrayList<UserWord> userWordArrayList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USERWORD + " WHERE " + KEY_USER_ID + " = ?";
+        int count;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sUserID});
+        // Move to first row
+        if (cursor.getCount() > 0) {
+            count = cursor.getCount();
+        } else {
+            count = 0;
+        }
+
+
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
+
+        return count;
+    }
+
+    public int getUserWordDateCount(int userID, String date) {
+        String sUserID = String.valueOf(userID);
+        ArrayList<UserWord> userWordArrayList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USERWORD + " WHERE " + KEY_USER_ID + " = ?" + " AND " + KEY_CREATED_AT + " = " + " ? ";
+        int count;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sUserID, date});
+        // Move to first row
+        if (cursor.getCount() > 0) {
+            count = cursor.getCount();
+        } else {
+            count = 0;
+        }
+
+
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
+
+        return count;
+    }
+
+    public int getUserWrongDateCount(int userID, String date) {
+        String sUserID = String.valueOf(userID);
+        ArrayList<UserWord> userWordArrayList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USERWORD + " WHERE " + KEY_USER_ID + " = ?" + " AND " + KEY_CREATED_AT + " = " + " ? " + " AND " + KEY_WRONG_TIME + " >= 1";
+        int count;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sUserID, date});
+        // Move to first row
+        if (cursor.getCount() > 0) {
+            count = cursor.getCount();
+        } else {
+            count = 0;
+        }
+
+
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
+
+        return count;
+    }
+
+    public int getUserWrongCount(int userID) {
+        String sUserID = String.valueOf(userID);
+        ArrayList<UserWord> userWordArrayList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USERWORD + " WHERE " + KEY_USER_ID + " = ?" + " AND " + KEY_WRONG_TIME + " >= 1";
+        int count;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sUserID});
+        // Move to first row
+        if (cursor.getCount() > 0) {
+            count = cursor.getCount();
+        } else {
+            count = 0;
+        }
+
+
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
+
+        return count;
     }
 
     /**

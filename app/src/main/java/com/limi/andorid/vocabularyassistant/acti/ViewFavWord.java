@@ -12,7 +12,7 @@ import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
-public class ViewWord extends AppCompatActivity implements View.OnClickListener {
+public class ViewFavWord extends AppCompatActivity implements View.OnClickListener {
 
     TextView wordTextView;
     TextView meaningTextView;

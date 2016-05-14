@@ -41,7 +41,7 @@ public class MyNoteBookFragment extends Fragment {
 
     private void initData() {
         String[] tabTitles = {"Favourite", "Wrong Wrong"};
-        Fragment[] fragments = {new FavouriteWordFragment(), new SettingFragment()};
+        Fragment[] fragments = {new FavouriteWordFragment(), new WrongWordFragment()};
         this.fragmentAdapter = new NotebookTabLayoutFragmentAdapter(this.getChildFragmentManager(), fragments, tabTitles);
         this.viewPager.setAdapter(this.fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);

@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bookID = 1;
+        bookID = 0;
 
 
         Button menuBtn = (Button) findViewById(R.id.title_bar_left_menu);
@@ -128,6 +128,24 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             TextView textView = (TextView) findViewById(R.id.title_main);
             textView.setText("My Notebook");
             changeFragment(new MyNoteBookFragment());
+            resideMenu.closeMenu();
+        }
+        if (v == item[2]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("Learning Trace");
+            changeFragment(new LearningTraceFragment());
+            resideMenu.closeMenu();
+        }
+        if (v == item[3]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("Message");
+            changeFragment(new SettingFragment());
+            resideMenu.closeMenu();
+        }
+        if (v == item[4]) {
+            TextView textView = (TextView) findViewById(R.id.title_main);
+            textView.setText("Setting");
+            changeFragment(new SettingFragment());
             resideMenu.closeMenu();
         }
         if (v == item[5]) {

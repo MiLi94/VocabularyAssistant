@@ -37,7 +37,7 @@
     </RelativeLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar_r"
+        android:id="@+id/progressBar_review"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="7.5dp"
@@ -56,52 +56,62 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout3"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/meaning1"
-            android:layout_width="240dip"
-            android:layout_height="50dip"
+            android:layout_width="159dp"
+            android:layout_height="56dp"
             android:layout_below="@+id/linearLayout2"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/meaning2"
-            android:layout_width="240dip"
-            android:layout_height="50dip"
+            android:layout_width="159dp"
+            android:layout_height="56dp"
             android:layout_below="@+id/meaning1"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/meaning3"
-            android:layout_width="240dip"
-            android:layout_height="50dip"
+            android:layout_width="159dp"
+            android:layout_height="56dp"
             android:layout_below="@+id/meaning2"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/meaning4"
-            android:layout_width="240dip"
-            android:layout_height="50dip"
+            android:layout_width="159dp"
+            android:layout_height="56dp"
             android:layout_below="@+id/meaning3"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/meaning5"
-            android:layout_width="240dip"
-            android:layout_height="50dip"
+            android:layout_width="159dp"
+            android:layout_height="56dp"
             android:layout_below="@+id/meaning4"
             android:layout_gravity="center_horizontal"
-            android:text="I don't know!" />
+            android:text="I don't know!"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/layout_top"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -109,17 +119,22 @@
         android:background="#F0F8FF"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/meaningWord"
+        <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dip"
-            android:layout_marginTop="10dip"
-            android:textColor="#000000"
-            android:textSize="35sp" />
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/meaningWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="adj. 熟知的： up to a particular standard or level especially of knowledge of recent developments"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+        </ScrollView>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/next_button_m"

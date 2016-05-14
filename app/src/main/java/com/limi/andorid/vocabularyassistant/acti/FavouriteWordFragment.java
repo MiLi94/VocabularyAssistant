@@ -69,7 +69,7 @@ public class FavouriteWordFragment extends Fragment {
                 String s = String.valueOf(arrayAdapter.getItem(i).getId());
 
 //                Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(parentView.getContext(), ViewWord.class);
+                Intent intent = new Intent(parentView.getContext(), ViewFavWord.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("ID", s);
 //                bundle.putIntegerArrayList("list", wordFav);
