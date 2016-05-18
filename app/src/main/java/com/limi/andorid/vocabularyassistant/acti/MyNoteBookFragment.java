@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.limi.andorid.vocabularyassistant.R;
-import com.special.ResideMenu.ResideMenu;
 
 
 public class MyNoteBookFragment extends Fragment {
     private View parentView;
-    private ResideMenu resideMenu;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -31,7 +29,7 @@ public class MyNoteBookFragment extends Fragment {
             }
             return parentView;
         }
-        parentView = inflater.inflate(R.layout.fragment_blank, container, false);
+        parentView = inflater.inflate(R.layout.fragment_my_notebook, container, false);
 
         viewPager = (ViewPager) parentView.findViewById(R.id.view_pager_vp);
         tabLayout = (TabLayout) parentView.findViewById(R.id.tab_layout_tl);

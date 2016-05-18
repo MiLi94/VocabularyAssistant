@@ -256,9 +256,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                 db.changeFav(userWord);
                 break;
             case R.id.title_bar_left_menu:
-//                finishReciting();
-                Intent intent = new Intent(getApplicationContext(), MissionActivity.class);
-                startActivity(intent);
+                finishReciting();
                 break;
         }
     }

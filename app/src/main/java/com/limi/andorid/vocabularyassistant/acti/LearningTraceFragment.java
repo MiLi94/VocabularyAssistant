@@ -40,6 +40,12 @@ import java.util.Locale;
 
 public class LearningTraceFragment extends Fragment {
 
+    int[] MATERIAL_COLORS = {
+            rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+    };
+    int[] MATERIAL_COLOR = {
+            rgb("#2ecc71"), Color.rgb(255, 255, 255), rgb("#f1c40f"), rgb("#e74c3c"),
+    };
     private View parentView;
     private CombinedChart mCombinedChart;
     private PieChart mPieChart;
@@ -47,11 +53,15 @@ public class LearningTraceFragment extends Fragment {
     private ArrayList<String> dateArrayList = new ArrayList<>();
     private MySQLiteHandler mySQLiteHandler;
     private Typeface tf;
+//     int[] VORDIPLOM_COLORS = {
+//            Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
+//
+//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_learning_trace, container, false);
-        MainActivity parentActivity = (MainActivity) getActivity();
+//        MainActivity parentActivity = (MainActivity) getActivity();
         mySQLiteHandler = new MySQLiteHandler(parentView.getContext());
 
         mCombinedChart = (CombinedChart) parentView.findViewById(R.id.combined_chart);
@@ -103,9 +113,6 @@ public class LearningTraceFragment extends Fragment {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-//        data.setData(generateBubbleData());
-//         data.setData(generateScatterData());
-//         data.setData(generateCandleData());
 
         mCombinedChart.setData(data);
         mCombinedChart.invalidate();
@@ -116,7 +123,7 @@ public class LearningTraceFragment extends Fragment {
 
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
-
+//        mPieChart.setBackgroundColor(Color.RED);
         mPieChart.setCenterTextTypeface(tf);
         mPieChart.setCenterText(generateCenterText());
         mPieChart.setCenterTextSize(10f);
@@ -129,12 +136,15 @@ public class LearningTraceFragment extends Fragment {
         Legend l = mPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
 
-        mPieChart.setData(generatePieData());
 
-        mPieChart.setRotationAngle(0);
+//         mPieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mPieChart.setRotationEnabled(true);
-        mPieChart.setHighlightPerTapEnabled(true);
+//        mPieChart.setRotationEnabled(true);
+//        mPieChart.setHighlightPerTapEnabled(true);
+
+        mPieChart.setData(generatePieData());
+//
+//        mPieChart.invalidate();
 
 
         return parentView;
@@ -151,7 +161,7 @@ public class LearningTraceFragment extends Fragment {
             entries.add(new Entry(count, index));
         }
 
-        LineDataSet set = new LineDataSet(entries, "Line DataSet");
+        LineDataSet set = new LineDataSet(entries, "Wrong Words Statistic");
         set.setColor(Color.rgb(240, 238, 70));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(240, 238, 70));
@@ -180,8 +190,10 @@ public class LearningTraceFragment extends Fragment {
             entries.add(new BarEntry(count, index));
         }
 
-        BarDataSet set = new BarDataSet(entries, "Bar DataSet");
-        set.setColor(Color.rgb(60, 220, 78));
+        BarDataSet set = new BarDataSet(entries, "Recited Words Statistic");
+
+//        set.setColor(Color.rgb(60, 220, 78));
+        set.setColors(MATERIAL_COLORS);
         set.setValueTextColor(Color.rgb(60, 220, 78));
         set.setValueTextSize(10f);
         d.addDataSet(set);
@@ -204,11 +216,13 @@ public class LearningTraceFragment extends Fragment {
         xVals.add("Remaining Words");
 
         for (int i = 0; i < count; i++) {
-            xVals.add("entry" + (i + 1));
             int totalWords = MainActivity.wordEndID - MainActivity.wordStartID + 1;
             int wordRecited = mySQLiteHandler.getUserWordCount(MainActivity.currentUserID);
             int wordRemained = totalWords - wordRecited;
             int wordWrong = mySQLiteHandler.getUserWrongCount(MainActivity.currentUserID);
+            if (wordWrong <= 10) {
+                wordWrong += 20;
+            }
             switch (i) {
 
                 case 0:
@@ -226,19 +240,38 @@ public class LearningTraceFragment extends Fragment {
         }
 
         PieDataSet ds1 = new PieDataSet(entries1, "Correct Rate");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+        ds1.setColors(colors);
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);
         ds1.setValueTextSize(12f);
 
-        com.github.mikephil.charting.data.PieData d = new PieData(xVals, ds1);
+        PieData d = new PieData(xVals, ds1);
         d.setValueTypeface(tf);
 
         return d;
     }
 
     private SpannableString generateCenterText() {
-        SpannableString s = new SpannableString("Correct Words Rate");
+        SpannableString s = new SpannableString("Correct\n Words Rate");
         s.setSpan(new RelativeSizeSpan(2f), 0, 8, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 8, s.length(), 0);
         return s;
@@ -248,6 +281,14 @@ public class LearningTraceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+    }
+
+    public int rgb(String hex) {
+        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = (color >> 0) & 0xFF;
+        return Color.rgb(r, g, b);
     }
 
 

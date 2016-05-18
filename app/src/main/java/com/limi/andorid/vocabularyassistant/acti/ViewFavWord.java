@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,9 @@ public class ViewFavWord extends AppCompatActivity implements View.OnClickListen
         nextButton.setOnClickListener(this);
         returnButton.setOnClickListener(this);
         lastButton.setOnClickListener(this);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_recite);
+        assert progressBar != null;
+        progressBar.setVisibility(View.INVISIBLE);
         assert favourite != null;
         favourite.setVisibility(View.INVISIBLE);
         startIndex = 0;

@@ -22,7 +22,7 @@ public class StartActivity extends AppCompatActivity {
         ani.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-                redirectTo();
+                jumpToMain();
             }
 
             @Override
@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-    private void redirectTo() {
+    private void jumpToMain() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

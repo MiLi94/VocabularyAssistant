@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,6 @@ public class ViewWrongWord extends AppCompatActivity implements View.OnClickList
     Button favourite;
     Button nextButton;
     TextView titleTextView;
-    //    ArrayList<Integer> integers = new ArrayList<>();
     int startIndex;
     int currentIndex;
     int endIndex;
@@ -50,7 +50,12 @@ public class ViewWrongWord extends AppCompatActivity implements View.OnClickList
         lastButton = (Button) findViewById(R.id.last_button);
         favourite = (Button) findViewById(R.id.fav);
         titleTextView = (TextView) findViewById(R.id.title_rec);
+        assert titleTextView != null;
         titleTextView.setText("View Meaning");
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_recite);
+        assert progressBar != null;
+        progressBar.setVisibility(View.INVISIBLE);
+
         nextButton.setOnClickListener(this);
         returnButton.setOnClickListener(this);
         lastButton.setOnClickListener(this);

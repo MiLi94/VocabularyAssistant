@@ -15,13 +15,14 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/WordofTodayTitle"
+                android:id="@+id/daily_sentence_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
@@ -33,33 +34,28 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="95dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!--<TextView-->
-                <!--android:id="@+id/word"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <!--android:gravity="center"-->
-                <!--android:padding="5dp"-->
-                <!--android:text="curriculum :"-->
-                <!--android:textColor="#000000"-->
-                <!--android:textSize="20sp" />-->
-
-                <TextView
-                    android:id="@+id/todayMeaning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:padding="5dp"
-                    android:text="n. an integrated course of academic studies"
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/todayMeaning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="2dp"
+                        android:text="When a doctor doctors another doctor, does he doctor the doctored doctor the way the doctored doctor wants to be doctored?"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+                </ScrollView>
             </LinearLayout>
 
         </LinearLayout>
+
 
     </FrameLayout>
 
@@ -91,6 +87,7 @@
                     android:layout_height="fill_parent">
 
                     <TextView
+                        android:id="@+id/bookTitle"
                         style="@style/Base.TextAppearance.AppCompat.Large"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,6 +108,7 @@
                     android:layout_height="fill_parent">
 
                     <TextView
+                        android:id="@+id/bookProgress"
                         style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,7 +136,7 @@
                     app:is_need_unit="true"
                     app:max_value="100"
                     app:string_title="Have recited"
-                    app:string_unit="units"
+                    app:string_unit="words"
                     app:total_engle="270" />
 
 

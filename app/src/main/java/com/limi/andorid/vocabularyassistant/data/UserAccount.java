@@ -5,13 +5,13 @@ package com.limi.andorid.vocabularyassistant.data;
  */
 public class UserAccount {
 
-    private String fullName;
+    private String name;
     private String email;
     private int userId;
 
 
-    public UserAccount(int id, String email, String fullName) {
-        this.fullName = fullName;
+    public UserAccount(int id, String email, String name) {
+        this.name = name;
         this.email = email;
         userId = id;
     }
@@ -32,4 +32,7 @@ public class UserAccount {
         this.userId = userId;
     }
 
+    public String getName() {
+        return name;
+    }
 }

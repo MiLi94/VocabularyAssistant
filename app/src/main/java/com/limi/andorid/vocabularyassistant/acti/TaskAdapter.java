@@ -67,6 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 taskArrayList.remove(position);
+                Task.tasks.remove(task);
                 notifyDataSetChanged();
 
             }

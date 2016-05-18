@@ -3,6 +3,7 @@ package com.limi.andorid.vocabularyassistant.acti;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.app.AppController;
 import com.limi.andorid.vocabularyassistant.helper.ColorArcProgressBar;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.special.ResideMenu.ResideMenu;
 
 import org.json.JSONException;
@@ -33,11 +35,14 @@ public class HomeFragment extends Fragment {
     private ResideMenu resideMenu;
     private ColorArcProgressBar colorArcProgressBar;
     private TextView textView;
+    private TextView bookTitleTextView;
+    private TextView unitTextView;
+    private MySQLiteHandler mySQLiteHandler;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.homefragment, container, false);
+        parentView = inflater.inflate(R.layout.fragment_home, container, false);
         setUpViews();
         return parentView;
     }
@@ -45,6 +50,9 @@ public class HomeFragment extends Fragment {
     private void setUpViews() {
         MainActivity parentActivity = (MainActivity) getActivity();
         resideMenu = parentActivity.getResideMenu();
+        String[] bookTitle = {"GRE", "TOEFL", "IETLS"};
+        bookTitleTextView = (TextView) parentView.findViewById(R.id.bookTitle);
+        unitTextView = (TextView) parentView.findViewById(R.id.bookProgress);
 
         parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +67,25 @@ public class HomeFragment extends Fragment {
         resideMenu.addIgnoredView(ignored_view);
         colorArcProgressBar = (ColorArcProgressBar) parentView.findViewById(R.id.progressbar);
 
+        mySQLiteHandler = new MySQLiteHandler(parentView.getContext());
+
         textView = (TextView) parentView.findViewById(R.id.todayMeaning);
-        colorArcProgressBar.setCurrentValues(77);
+
+        bookTitleTextView.setText(bookTitle[MainActivity.bookID]);
+
+
+        int currentProgress = mySQLiteHandler.getUserWordBookCount(MainActivity.currentUserID, MainActivity.bookID);
+
+        int wordMax = MainActivity.wordEndID - MainActivity.wordStartID + 1;
+
+        int list = currentProgress / 100 + 1;
+        int unit = (currentProgress - (list - 1) * 100) / 10 + 1;
+
+        unitTextView.setText("List " + list + ", Unit " + unit);
+        Log.d("Current Progress", String.valueOf(currentProgress));
+        colorArcProgressBar.setMaxValues(wordMax);
+        colorArcProgressBar.setCurrentValues(currentProgress);
+
         colorArcProgressBar.setDiameter(200);
         colorArcProgressBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +99,13 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        colorArcProgressBar.setCurrentValues(77);
-        colorArcProgressBar.setDiameter(200);
-        getSentenceOfToday();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+////        colorArcProgressBar.setCurrentValues(77);
+////        colorArcProgressBar.setDiameter(200);
+//        getSentenceOfToday();
+//    }
 
     private void getSentenceOfToday() {
         String tag_string_req = "getSentence";
