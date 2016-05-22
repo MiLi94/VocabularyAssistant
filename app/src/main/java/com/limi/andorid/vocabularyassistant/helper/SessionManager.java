@@ -50,8 +50,11 @@ public class SessionManager {
     }
 
 
-    public void setKeySelectBook(String selectBook) {
-        editor.putString(KEY_SELECT_BOOK, selectBook);
+    public void setKeySelectBook(int userID, int bookID) {
+
+        String sBookID = String.valueOf(bookID);
+        String sUserID = String.valueOf(userID);
+        editor.putString(sUserID, sBookID);
 
         // commit changes
         editor.commit();
@@ -63,8 +66,9 @@ public class SessionManager {
         return pref.getBoolean(KEY_IS_LOGGED_IN, false);
     }
 
-    public boolean isSelected() {
-        return pref.getBoolean(KEY_IS_LOGGED_IN, false);
+    public String getBook(int userID) {
+        String sUserID = String.valueOf(userID);
+        return pref.getString(sUserID, "-1");
     }
 }
 

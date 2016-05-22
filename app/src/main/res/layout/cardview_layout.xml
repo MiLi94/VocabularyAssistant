@@ -5,21 +5,13 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="#FFE4E1"
+    card_view:cardBackgroundColor="#e1f4d9"
     card_view:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
-
-        <!--<ImageView-->
-        <!--android:id="@+id/pic"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@color/white"-->
-        <!--android:scaleType="centerCrop" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="apothecary"
-                    android:textColor="#0288D1"
+                    android:textColor="#827717"
                     android:textSize="20sp" />
 
 

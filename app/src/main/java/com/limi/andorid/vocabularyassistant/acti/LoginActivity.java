@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(LoginActivity.this,
-                    MainActivity.class);
+                    SelectBookActivity.class);
             startActivity(intent);
             finish();
         }
@@ -83,11 +83,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login_check();
-//                login_success();
-//                Intent i = new Intent(getApplicationContext(),
-//                        MainActivity.class);
-//                startActivity(i);
-//                finish();
             }
         });
 
@@ -135,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login_success() {
         //login.setEnabled(true);
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, SelectBookActivity.class);
         startActivity(intent);
         //finish();
     }

@@ -77,4 +77,16 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="about">Vocabulary Assistant is an Android application to help Chinese student memorize English vocabulary for English test such as IETLS, GRE and TOEFL.</string>
+    <string name="us">This is a group project from module CSE208. We are Group 15: Mi Li (1302197) and Qinghe Li (1301872). Even though there are just two people in working, we can complete the project smoothly because of our tacit cooperation. By almost daily meeting, several times integration and debugging, we could finish the Android application as this version.</string>
+    <string name="thanks">Thanks for your installation and support. Welcome the trail "Vocabulary Assistant" to provide your valuable comments or suggestions.</string>
+    <!--<string name="school">Xi'an Jiaotong Liverpool University(XJTLU)</string>-->
+        <string name="connect1">
+        Mi Li (1302197)
+        E-mail: Mi.Li13@student.xjtlu.edu.cn</string>
+    <string name="connect2">
+        Qinghe Li (1301872)
+        E-mail: Qinghe.Li13@student.xjtlu.edu.cn</string>
+
+
 </resources>

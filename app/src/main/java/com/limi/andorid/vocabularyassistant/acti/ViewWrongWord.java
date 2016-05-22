@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Word;
@@ -37,9 +36,9 @@ public class ViewWrongWord extends AppCompatActivity implements View.OnClickList
 //        integers = bundle.getIntegerArrayList("list");
 
         assert strContentString != null;
-        Toast.makeText(getApplicationContext(), strContentString, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), strContentString, Toast.LENGTH_SHORT).show();
         int wordCurrentID = Integer.parseInt(strContentString);
-        Toast.makeText(getApplicationContext(), String.valueOf(currentIndex), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), String.valueOf(currentIndex), Toast.LENGTH_SHORT).show();
 
 
         wordTextView = (TextView) findViewById(R.id.word);
@@ -49,6 +48,8 @@ public class ViewWrongWord extends AppCompatActivity implements View.OnClickList
         nextButton = (Button) findViewById(R.id.next_button);
         lastButton = (Button) findViewById(R.id.last_button);
         favourite = (Button) findViewById(R.id.fav);
+        assert favourite != null;
+        favourite.setVisibility(View.INVISIBLE);
         titleTextView = (TextView) findViewById(R.id.title_rec);
         assert titleTextView != null;
         titleTextView.setText("View Meaning");

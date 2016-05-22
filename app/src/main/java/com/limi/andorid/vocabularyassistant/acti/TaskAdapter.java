@@ -47,7 +47,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         });
         final Task task = taskArrayList.get(position);
-        holder.listTextView.setText("Anytime reciting task " + position);
+        holder.anytimeRecite.setText("Anytime reciting task " + (position + 1));
         String bookTitle = "";
         switch (task.getBookId()) {
             case 0:
@@ -76,22 +76,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 int baseID = 0;
+                int finalID = 0;
                 switch (task.getBookId()) {
                     case 0:
                         baseID = 0;
+                        finalID = Word.idWordBase.get("GRE threek Words") - 1;
                         break;
                     case 1:
                         baseID = Word.idWordBase.get("GRE threek Words");
+                        finalID = Word.idWordBase.get("TOEFL") - 1;
                         break;
                     case 2:
                         baseID = Word.idWordBase.get("TOEFL");
+                        finalID = Word.idWordBase.get("IETLS") - 1;
                         break;
                 }
                 int startID = baseID + (task.getStartList() - 1) * 100 + (task.getStartUnit() - 1) * 10;
+
                 SummaryActivity.finishID = baseID + (task.getEndList() - 1) * 100 + (task.getEndUnit()) * 10 - 1;
                 Intent intent = new Intent(mContext, RecitingActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("nextStartID", startID);
+                bundle.putInt("finalID", finalID);
+                bundle.putBoolean("task", true);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }
@@ -114,7 +121,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            anytimeRecite = (TextView) itemView.findViewById(R.id.anytime_reciting_list);
+            anytimeRecite = (TextView) itemView.findViewById(R.id.anytime_reciting_list_tit);
             bookTextView = (TextView) itemView.findViewById(R.id.bookset);
             listTextView = (TextView) itemView.findViewById(R.id.listset);
             buttonStr = (Button) itemView.findViewById(R.id.start_btn);

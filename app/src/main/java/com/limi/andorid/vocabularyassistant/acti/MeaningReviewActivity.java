@@ -30,6 +30,7 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
     private Button button3;
     private Button button4;
     private Button button5;
+    private Button quit_btn;
     //    private int[] randomArray = new int[4];
     private HashSet<Integer> randomSet;
     private ArrayList<Integer> choice;
@@ -70,11 +71,13 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
         button4 = (Button) findViewById(R.id.meaning4);
         button5 = (Button) findViewById(R.id.meaning5);
         nextButton = (Button) findViewById(R.id.next_button_m);
+        quit_btn = (Button) findViewById(R.id.test_quit);
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
         button5.setOnClickListener(this);
+        quit_btn.setOnClickListener(this);
 
         nextButton.setOnClickListener(this);
 
@@ -125,11 +128,11 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
         button3.setText(testWords.get(choice.get(2)).getWord());
         button4.setText(testWords.get(choice.get(3)).getWord());
 
-        button1.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaningbutton));
-        button2.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaningbutton));
-        button3.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaningbutton));
-        button4.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaningbutton));
-        button5.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaningbutton));
+        button1.setBackgroundDrawable(getResources().getDrawable(R.mipmap.review_btn2));
+        button2.setBackgroundDrawable(getResources().getDrawable(R.mipmap.review_btn2));
+        button3.setBackgroundDrawable(getResources().getDrawable(R.mipmap.review_btn2));
+        button4.setBackgroundDrawable(getResources().getDrawable(R.mipmap.review_btn2));
+        button5.setBackgroundDrawable(getResources().getDrawable(R.mipmap.review_btn2));
     }
 
     private void getRandomNumber() {
@@ -149,6 +152,10 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
             case R.id.meaning1:
                 if (correctID == 1) {
                     setCorrectButton(button1);
+                    button4.setEnabled(false);
+                    button2.setEnabled(false);
+                    button5.setEnabled(false);
+                    button3.setEnabled(false);
                 } else {
                     isWrong = true;
                     setWrongButton(button1);
@@ -157,6 +164,10 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
             case R.id.meaning2:
                 if (correctID == 2) {
                     setCorrectButton(button2);
+                    button1.setEnabled(false);
+                    button4.setEnabled(false);
+                    button5.setEnabled(false);
+                    button3.setEnabled(false);
                 } else {
                     isWrong = true;
                     setWrongButton(button2);
@@ -165,6 +176,10 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
             case R.id.meaning3:
                 if (correctID == 3) {
                     setCorrectButton(button3);
+                    button1.setEnabled(false);
+                    button2.setEnabled(false);
+                    button5.setEnabled(false);
+                    button4.setEnabled(false);
                 } else {
                     isWrong = true;
                     setWrongButton(button3);
@@ -173,6 +188,10 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
             case R.id.meaning4:
                 if (correctID == 4) {
                     setCorrectButton(button4);
+                    button1.setEnabled(false);
+                    button2.setEnabled(false);
+                    button5.setEnabled(false);
+                    button3.setEnabled(false);
                 } else {
                     isWrong = true;
                     setWrongButton(button4);
@@ -180,22 +199,50 @@ public class MeaningReviewActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.meaning5:
                 isWrong = true;
-                button5.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_nknow));
+                button5.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_nknow1));
+                nextButton.setVisibility(View.VISIBLE);
+                switch (correctID) {
+                    case 1:
+                        button1.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct2));
+                        break;
+                    case 2:
+                        button2.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct2));
+                        break;
+                    case 3:
+                        button3.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct2));
+                        break;
+                    case 4:
+                        button4.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct2));
+                        break;
+
+                }
                 break;
             case R.id.next_button_m:
                 showNextWordView();
+
+                button1.setEnabled(true);
+                button2.setEnabled(true);
+                button3.setEnabled(true);
+                button4.setEnabled(true);
+                button5.setEnabled(true);
                 break;
+            case R.id.test_quit:
+                Intent intent2 = new Intent(MeaningReviewActivity.this, SummaryActivity.class);
+                setResult(0, intent2);
+                finish();
+                break;
+
         }
 
     }
 
     private void setCorrectButton(Button button) {
-        button.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct));
+        button.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_correct2));
         nextButton.setVisibility(View.VISIBLE);
     }
 
     private void setWrongButton(Button button) {
-        button.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_wrong));
+        button.setBackgroundDrawable(getResources().getDrawable(R.mipmap.meaning_wrong2));
 
     }
 

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@mipmap/login_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -55,37 +55,40 @@
 
     <Button
         android:id="@+id/TOEFL"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/layout_top"
         android:layout_gravity="left|center_vertical"
         android:layout_marginTop="73dp"
         android:layout_toLeftOf="@+id/IELTS"
         android:layout_toStartOf="@+id/IELTS"
-        android:background="@mipmap/categoty1"
+        android:background="@mipmap/categoryte"
         android:text="TOEFL"
-        android:textColor="@color/white" />
+        android:textColor="#000000"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/IELTS"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/TOEFL"
         android:layout_centerHorizontal="true"
         android:layout_gravity="right|center_vertical"
-        android:background="@mipmap/category2"
+        android:background="@mipmap/categoryie"
         android:text="IELTS"
-        android:textColor="@color/white" />
+        android:textColor="#000000"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/GRE"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/IELTS"
         android:layout_gravity="center_vertical"
         android:layout_toRightOf="@+id/IELTS"
-        android:background="@mipmap/categoty"
+        android:background="@mipmap/categoryge"
         android:text="GRE"
-        android:textColor="@color/white" />
+        android:textColor="#000000"
+        android:textSize="25sp" />
     <!--</FrameLayout>-->
 </RelativeLayout>

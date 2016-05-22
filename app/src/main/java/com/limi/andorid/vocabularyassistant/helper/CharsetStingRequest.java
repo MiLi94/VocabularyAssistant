@@ -1,9 +1,5 @@
 package com.limi.andorid.vocabularyassistant.helper;
 
-/**
- * Created by limi on 16/4/18.
- */
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
@@ -22,7 +18,6 @@ public class CharsetStingRequest extends StringRequest {
                                Listener<String> listener, ErrorListener errorListener) {
         super(method, url, listener, errorListener);
     }
-
 
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
-import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Word;
@@ -39,16 +38,16 @@ public class ListUnitPicker extends FrameLayout {
         switch (bookID) {
             case 0:
                 wordMaxID = Word.idWordBase.get("GRE threek Words");
-                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
 
                 break;
             case 1:
                 wordMaxID = Word.idWordBase.get("TOEFL") - Word.idWordBase.get("GRE threek Words");
-                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
                 break;
             case 2:
                 wordMaxID = Word.idWordBase.get("IETLS") - Word.idWordBase.get("TOEFL");
-                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
 
                 break;
         }
@@ -117,16 +116,16 @@ public class ListUnitPicker extends FrameLayout {
         switch (bookID) {
             case 0:
                 wordMaxID = Word.idWordBase.get("GRE threek Words");
-                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
 
                 break;
             case 1:
                 wordMaxID = Word.idWordBase.get("TOEFL") - Word.idWordBase.get("GRE threek Words");
-                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
                 break;
             case 2:
                 wordMaxID = Word.idWordBase.get("IETLS") - Word.idWordBase.get("TOEFL");
-                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), String.valueOf(wordMaxID), Toast.LENGTH_LONG).show();
                 break;
         }
         maxList = (wordMaxID + 1) / 100 + 1;

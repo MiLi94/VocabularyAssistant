@@ -3,7 +3,6 @@ package com.limi.andorid.vocabularyassistant.dialog;
 import android.content.Context;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 
@@ -37,7 +36,7 @@ public class BookPicker extends FrameLayout {
 
                 book = newVal;
                 onDataChanged();
-                Toast.makeText(context, String.valueOf(book), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, String.valueOf(book), Toast.LENGTH_LONG).show();
 
             }
         };

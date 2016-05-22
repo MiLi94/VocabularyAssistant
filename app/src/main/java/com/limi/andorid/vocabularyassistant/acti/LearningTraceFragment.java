@@ -41,7 +41,7 @@ import java.util.Locale;
 public class LearningTraceFragment extends Fragment {
 
     int[] MATERIAL_COLORS = {
-            rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+            rgb("#2E7D32"), rgb("#43A047"), rgb("#66BB6A"), rgb("#A5D6A7")
     };
     int[] MATERIAL_COLOR = {
             rgb("#2ecc71"), Color.rgb(255, 255, 255), rgb("#f1c40f"), rgb("#e74c3c"),
@@ -136,15 +136,7 @@ public class LearningTraceFragment extends Fragment {
         Legend l = mPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
 
-
-//         mPieChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-//        mPieChart.setRotationEnabled(true);
-//        mPieChart.setHighlightPerTapEnabled(true);
-
         mPieChart.setData(generatePieData());
-//
-//        mPieChart.invalidate();
 
 
         return parentView;
@@ -162,15 +154,15 @@ public class LearningTraceFragment extends Fragment {
         }
 
         LineDataSet set = new LineDataSet(entries, "Wrong Words Statistic");
-        set.setColor(Color.rgb(240, 238, 70));
+        set.setColor(Color.rgb(153, 102, 0));
         set.setLineWidth(2.5f);
-        set.setCircleColor(Color.rgb(240, 238, 70));
+        set.setCircleColor(Color.rgb(153, 102, 0));
         set.setCircleRadius(5f);
-        set.setFillColor(Color.rgb(240, 238, 70));
+        set.setFillColor(Color.rgb(153, 102, 0));
         set.setDrawCubic(true);
         set.setDrawValues(true);
         set.setValueTextSize(10f);
-        set.setValueTextColor(Color.rgb(240, 238, 70));
+        set.setValueTextColor(Color.rgb(153, 102, 0));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
 
@@ -241,27 +233,9 @@ public class LearningTraceFragment extends Fragment {
 
         PieDataSet ds1 = new PieDataSet(entries1, "Correct Rate");
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-        ds1.setColors(colors);
+        ds1.setColors(ColorTemplate.PASTEL_COLORS);
         ds1.setSliceSpace(2f);
-        ds1.setValueTextColor(Color.WHITE);
+        ds1.setValueTextColor(Color.BLACK);
         ds1.setValueTextSize(12f);
 
         PieData d = new PieData(xVals, ds1);

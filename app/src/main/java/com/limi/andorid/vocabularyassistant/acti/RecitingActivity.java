@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.UserWord;
@@ -18,6 +17,8 @@ import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+//import android.widget.Toast;
 
 public class RecitingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,18 +38,28 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
     private int currentID;
     private int userID;
     private int endID;
+    private int finalID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciting);
+        boolean isTask = false;
 
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
             nextStart = bundle.getInt("nextStartID", -1);
+            isTask = bundle.getBoolean("task", false);
+            finalID = bundle.getInt("finalID", MainActivity.wordEndID);
         } catch (Exception e) {
             nextStart = -1;
+
+        }
+
+        if (!isTask) {
+            finalID = MainActivity.wordEndID;
+        } else {
 
         }
         db = new MySQLiteHandler(getApplicationContext());
@@ -85,10 +96,9 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         if (nextStart == -1) {
             ArrayList<UserWord> words1 = db.getUserWordData(userID);
 
-            if (UserWord.userWordHashMap.size() == 0) {
-
+            if (UserWord.userWordHashMap.size() != words1.size()) {
+                UserWord.userWordHashMap.clear();
                 for (UserWord word : words1) {
-
                     UserWord.userWordHashMap.put(word.getWordID(), word);
                 }
             }
@@ -104,6 +114,7 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                 });
                 int lastID = 0;
                 boolean isCustomized = false;
+
                 for (int i = 0; i < words1.size(); i++) {
 
                     UserWord userWord = words1.get(i);
@@ -115,10 +126,10 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                             if (userWord.getWordID() <= Word.idWordBase.get("GRE threek Words") - 1 && MainActivity.bookID == 0) {
                                 lastID = userWord.getWordID();
                                 break;
-                            } else if (userWord.getWordID() <= Word.idWordBase.get("TOEFL") - 1 && MainActivity.bookID == 1) {
+                            } else if (userWord.getWordID() <= Word.idWordBase.get("TOEFL") - 1 && MainActivity.bookID == 1 && userWord.getWordID() >= Word.idWordBase.get("GRE threek Words")) {
                                 lastID = userWord.getWordID();
                                 break;
-                            } else if (userWord.getWordID() <= Word.idWordBase.get("IETLS") - 1 && MainActivity.bookID == 2) {
+                            } else if (userWord.getWordID() <= Word.idWordBase.get("IETLS") - 1 && MainActivity.bookID == 2 && userWord.getWordID() >= Word.idWordBase.get("TOEFL")) {
                                 lastID = userWord.getWordID();
                                 break;
                             }
@@ -126,14 +137,11 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
                     } else {
 
                     }
-
-
                 }
                 if (!isCustomized) {
                     lastID = words1.get(words1.size() - 1).getWordID();
                 }
-                //Word 1 : luanxi bei
-                //Word
+
                 if (MainActivity.wordStartID > lastID) {
                     startID = MainActivity.wordStartID;
                 } else {
@@ -145,12 +153,12 @@ public class RecitingActivity extends AppCompatActivity implements View.OnClickL
         }
 
         endID = startID + 9;
-        if (endID >= MainActivity.wordEndID) {
-            endID = MainActivity.wordEndID;
+        if (endID >= finalID) {
+            endID = finalID;
         }
         currentID = startID;
 
-        Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), String.valueOf(currentID), Toast.LENGTH_SHORT).show();
 
         Word word = WordImportHandler.systemWordBaseArrayList.get(currentID);
         if (UserWord.userWordHashMap.containsKey(currentID))

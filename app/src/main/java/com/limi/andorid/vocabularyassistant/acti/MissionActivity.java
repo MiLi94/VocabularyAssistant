@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.limi.andorid.vocabularyassistant.R;
 import com.limi.andorid.vocabularyassistant.data.Task;
@@ -20,6 +21,8 @@ public class MissionActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private TaskAdapter myAdapter;
 
+    private Button quit_btn;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
@@ -30,6 +33,14 @@ public class MissionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), AddingTaskActivity.class);
                 startActivity(i);
+                finish();
+            }
+        });
+
+        quit_btn = (Button) findViewById(R.id.back);
+        quit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -45,6 +56,24 @@ public class MissionActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(myAdapter);
 
+        updateBg();
+
     }
 
+    private void updateBg() {
+        ImageView imageView = (ImageView) findViewById(R.id.miss_bg);
+        if (Task.tasks.size() == 0) {
+            assert imageView != null;
+            imageView.setVisibility(View.VISIBLE);
+        } else {
+            assert imageView != null;
+            imageView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBg();
+    }
 }

@@ -60,9 +60,14 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
         holder.nameTextView.setText(String.valueOf(w.getUserName()));
 
         String sCount = String.valueOf(w.getThisCount());
-        holder.countTextView.setText(sCount + "Words");
+        holder.countTextView.setText(sCount + " Words");
 
-        int difference = w.getTodayRank() - w.getLastRank();
+        int difference = w.getLastRank() - w.getTodayRank();
+        String s = "New";
+        if (difference != 0) {
+            s = String.valueOf(difference);
+        }
+
 
         holder.numberTextView.setText(String.valueOf(difference));
 

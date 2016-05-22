@@ -438,6 +438,31 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+
+    public int getReviewedFrequency(String sDate, int userID) {
+        String sUserID = String.valueOf(userID);
+
+        String selectQuery = "SELECT * FROM " + TABLE_USERWORD + " WHERE " + KEY_CREATED_AT + " = ?" + " AND " + KEY_USER_ID + " = ? AND " + KEY_WRONG_TIME + " >0 ";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sDate, sUserID});
+//        int wrongTime = -1;
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            int i = cursor.getCount();
+            cursor.close();
+            db.close();
+            return i;
+//            wrongTime = cursor.getInt(0);
+        } else {
+            cursor.close();
+            db.close();
+        }
+
+
+        return 0;
+    }
+
     public void increaseWrongTime(UserWord word) {
 
         String sUserID = String.valueOf(word.getUserID());
@@ -557,9 +582,33 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            boolean isfavourite = (cursor.getInt(3) == 1);
-            UserWord userWord = new UserWord(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), isfavourite, cursor.getInt(4), cursor.getString(5));
+            boolean isFavourite = (cursor.getInt(3) == 1);
+            UserWord userWord = new UserWord(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), isFavourite, cursor.getInt(4), cursor.getString(5));
             userWordArrayList.add(userWord);
+        }
+        cursor.close();
+//        db.close();
+        // return user
+        Log.d(TAG, "Fetching user word from Sqlite: " + userWordArrayList.toString());
+
+        return userWordArrayList;
+    }
+
+
+    public ArrayList<Integer> getUserWordDataDate(int userID, String sDate) {
+        String sUserID = String.valueOf(userID);
+        ArrayList<Integer> userWordArrayList = new ArrayList<>();
+        String selectQuery = "SELECT  wordID FROM " + TABLE_USERWORD + " WHERE " + KEY_USER_ID + " = ?" + " AND " + KEY_CREATED_AT + " =?";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sUserID, sDate});
+        // Move to first row
+        cursor.moveToFirst();
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+//            boolean isFavourite = (cursor.getInt(3) == 1);
+//            UserWord userWord = new UserWord(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), isFavourite, cursor.getInt(4), cursor.getString(5));
+            userWordArrayList.add(cursor.getInt(0));
         }
         cursor.close();
 //        db.close();
@@ -720,10 +769,11 @@ public class MySQLiteHandler extends SQLiteOpenHelper {
     /**
      * Re crate database Delete all tables and create them again
      */
-    public void deleteUserWord() {
+    public void deleteUserWord(int userID) {
+        String sUserID = String.valueOf(userID);
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
-//        db.delete(TABLE_USER, null, null);
+        db.delete(TABLE_USERWORD, "userID = ? ", new String[]{sUserID});
         db.close();
 
         Log.d(TAG, "Deleted all user info from sqlite");

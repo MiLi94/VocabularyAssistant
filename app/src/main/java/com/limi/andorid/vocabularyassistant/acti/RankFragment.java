@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 
 public class RankFragment extends Fragment {
-    public static ArrayList<Integer> wordFav = new ArrayList<>();
     private static RankFragment instance;
     private View parentView;
     //    private ListView listView;

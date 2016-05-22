@@ -41,11 +41,23 @@
                 android:background="@mipmap/add" />
         </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/anytime_reciting_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.limi.andorid.vocabularyassistant.act.Summary" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/miss_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/mission" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/anytime_reciting_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.limi.andorid.vocabularyassistant.act.Summary" />
+
+        </FrameLayout>
 
     </LinearLayout>
 </LinearLayout>

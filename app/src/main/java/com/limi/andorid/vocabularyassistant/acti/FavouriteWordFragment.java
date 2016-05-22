@@ -83,12 +83,12 @@ public class FavouriteWordFragment extends Fragment {
     private ArrayList<Word> getData() {
         ArrayList<Word> wordList = new ArrayList<>();
         ArrayList<Word> words = WordImportHandler.systemWordBaseArrayList;
-        if (UserWord.userWordHashMap.size() == 0) {
-            ArrayList<UserWord> words1 = db.getUserWordData(MainActivity.currentUserID);
-            for (UserWord word : words1) {
-                UserWord.userWordHashMap.put(word.getWordID(), word);
-            }
+//        if (UserWord.userWordHashMap.size() == 0) {
+        ArrayList<UserWord> words1 = db.getUserWordData(MainActivity.currentUserID);
+        for (UserWord word : words1) {
+            UserWord.userWordHashMap.put(word.getWordID(), word);
         }
+//        }
         Iterator iterator = UserWord.userWordHashMap.entrySet().iterator();
 
         while (iterator.hasNext()) {

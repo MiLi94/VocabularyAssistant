@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     private ColorArcProgressBar colorArcProgressBar;
     private TextView textView;
     private TextView bookTitleTextView;
+    private TextView remained;
     private TextView unitTextView;
     private MySQLiteHandler mySQLiteHandler;
 
@@ -52,12 +53,21 @@ public class HomeFragment extends Fragment {
         resideMenu = parentActivity.getResideMenu();
         String[] bookTitle = {"GRE", "TOEFL", "IETLS"};
         bookTitleTextView = (TextView) parentView.findViewById(R.id.bookTitle);
+        remained = (TextView) parentView.findViewById(R.id.remained_text);
         unitTextView = (TextView) parentView.findViewById(R.id.bookProgress);
 
         parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), MissionActivity.class);
+                startActivity(i);
+            }
+        });
+
+        parentView.findViewById(R.id.btn_review).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ReviewActivity.class);
                 startActivity(i);
             }
         });
@@ -73,14 +83,24 @@ public class HomeFragment extends Fragment {
 
         bookTitleTextView.setText(bookTitle[MainActivity.bookID]);
 
+        getSentenceOfToday();
 
+        initView();
+
+    }
+
+
+    public void initView() {
         int currentProgress = mySQLiteHandler.getUserWordBookCount(MainActivity.currentUserID, MainActivity.bookID);
 
         int wordMax = MainActivity.wordEndID - MainActivity.wordStartID + 1;
 
+        int maxlist = wordMax / 100 + 1;
+
+
         int list = currentProgress / 100 + 1;
         int unit = (currentProgress - (list - 1) * 100) / 10 + 1;
-
+        int remain = maxlist - list;
         unitTextView.setText("List " + list + ", Unit " + unit);
         Log.d("Current Progress", String.valueOf(currentProgress));
         colorArcProgressBar.setMaxValues(wordMax);
@@ -94,18 +114,27 @@ public class HomeFragment extends Fragment {
                 startActivity(i);
             }
         });
-        getSentenceOfToday();
+
+        remained.setText(remain + " lists remained.");
 
 
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-////        colorArcProgressBar.setCurrentValues(77);
-////        colorArcProgressBar.setDiameter(200);
-//        getSentenceOfToday();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+//        colorArcProgressBar.setCurrentValues(77);
+//        colorArcProgressBar.setDiameter(200);
+
+        initView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initView();
+    }
+
 
     private void getSentenceOfToday() {
         String tag_string_req = "getSentence";

@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
 import com.limi.andorid.vocabularyassistant.data.Word;
+import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 
 public class ViewFavWord extends AppCompatActivity implements View.OnClickListener {
@@ -27,20 +28,23 @@ public class ViewFavWord extends AppCompatActivity implements View.OnClickListen
     int startIndex;
     int currentIndex;
     int endIndex;
+    int wordCurrentID;
+    private MySQLiteHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciting);
+        db = new MySQLiteHandler(getApplicationContext());
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String strContentString = bundle.getString("ID");
 //        integers = bundle.getIntegerArrayList("list");
 
         assert strContentString != null;
-        Toast.makeText(getApplicationContext(), strContentString, Toast.LENGTH_SHORT).show();
-        int wordCurrentID = Integer.parseInt(strContentString);
-        Toast.makeText(getApplicationContext(), String.valueOf(currentIndex), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), strContentString, Toast.LENGTH_SHORT).show();
+        wordCurrentID = Integer.parseInt(strContentString);
+//        Toast.makeText(getApplicationContext(), String.valueOf(currentIndex), Toast.LENGTH_SHORT).show();
 
 
         wordTextView = (TextView) findViewById(R.id.word);
@@ -52,14 +56,13 @@ public class ViewFavWord extends AppCompatActivity implements View.OnClickListen
         favourite = (Button) findViewById(R.id.fav);
         titleTextView = (TextView) findViewById(R.id.title_rec);
         titleTextView.setText("View Meaning");
+        favourite.setVisibility(View.INVISIBLE);
         nextButton.setOnClickListener(this);
         returnButton.setOnClickListener(this);
         lastButton.setOnClickListener(this);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_recite);
         assert progressBar != null;
         progressBar.setVisibility(View.INVISIBLE);
-        assert favourite != null;
-        favourite.setVisibility(View.INVISIBLE);
         startIndex = 0;
         endIndex = FavouriteWordFragment.wordFav.size() - 1;
         currentIndex = findindex(wordCurrentID);
@@ -87,6 +90,7 @@ public class ViewFavWord extends AppCompatActivity implements View.OnClickListen
         wordTextView.setText(word.getWord());
         phoneticTextView.setText(word.getPhonetic());
         meaningTextView.setText(word.getTrans());
+
     }
 
     private void setNextButton() {
@@ -125,6 +129,17 @@ public class ViewFavWord extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.title_bar_left_menu:
                 finishReciting();
+                break;
+            case R.id.fav:
+                UserWord userWord = UserWord.userWordHashMap.get(wordCurrentID);
+                if (userWord.isFavourite()) {
+                    userWord.setIsFavourite(false);
+                    favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star3));
+                } else {
+                    userWord.setIsFavourite(true);
+                    favourite.setBackgroundDrawable(getResources().getDrawable(R.mipmap.star2));
+                }
+                db.changeFav(userWord);
                 break;
 
 

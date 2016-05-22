@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.limi.andorid.vocabularyassistant.R;
+import com.limi.andorid.vocabularyassistant.data.UserWord;
 import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
@@ -28,8 +29,11 @@ public class SpellingReviewActivity extends AppCompatActivity implements View.On
     private EditText editText;
     private Button showAnswer;
     private Button nextButton;
+    private Button submitBtn;
+    private Button quit_btn;
     private ArrayList<Word> testWords;
     private boolean isWrong = false;
+    private Word currentWord;
 
     private MySQLiteHandler mySQLiteHandler;
 
@@ -40,6 +44,8 @@ public class SpellingReviewActivity extends AppCompatActivity implements View.On
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+
+        quit_btn = (Button) findViewById(R.id.test_quit);
 
         startID = bundle.getInt("StartID");
         endID = bundle.getInt("EndID");
@@ -61,11 +67,15 @@ public class SpellingReviewActivity extends AppCompatActivity implements View.On
         editText = (EditText) findViewById(R.id.spellText);
         nextButton = (Button) findViewById(R.id.next_button_r);
         showAnswer = (Button) findViewById(R.id.spellShowAns);
+        submitBtn = (Button) findViewById(R.id.submit_btn);
 
 
-        assert nextButton != null;
+        assert submitBtn != null;
+        submitBtn.setOnClickListener(this);
+
         nextButton.setOnClickListener(this);
         showAnswer.setOnClickListener(this);
+        quit_btn.setOnClickListener(this);
 
         mySQLiteHandler = new MySQLiteHandler(getApplicationContext());
 
@@ -78,7 +88,7 @@ public class SpellingReviewActivity extends AppCompatActivity implements View.On
         nextButton.setVisibility(View.INVISIBLE);
 
 
-        Word currentWord = testWords.get(currentID);
+        currentWord = testWords.get(currentID);
         String meaning = currentWord.getTrans();
         String showMeaning = "";
         if (meaning.contains("\n")) {
@@ -105,13 +115,49 @@ public class SpellingReviewActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next_button_r:
-                //show answer
+                showNextWordView();
                 break;
             case R.id.spellShowAns:
+                editText.setText(currentWord.getWord());
+                nextButton.setVisibility(View.VISIBLE);
+                break;
 
+            case R.id.submit_btn:
+                editText.setTextColor(getResources().getColor(R.color.red));
+                if (editText.getText().equals(currentWord.getWord())) {
+                    nextButton.setVisibility(View.VISIBLE);
+                } else {
+                    editText.setText(currentWord.getWord());
+                    nextButton.setVisibility(View.VISIBLE);
+                    isWrong = true;
+                }
+                editText.setText(currentWord.getWord());
+                nextButton.setVisibility(View.VISIBLE);
+                break;
+            case R.id.test_quit:
+                Intent intent2 = new Intent(SpellingReviewActivity.this, SummaryActivity.class);
+                setResult(0, intent2);
+                finish();
                 break;
 
 
         }
+    }
+
+    private void showNextWordView() {
+        if (isWrong) {
+            UserWord.userWordHashMap.get(testWords.get(correctID).getId()).inWrongTime();
+            mySQLiteHandler.increaseWrongTime(UserWord.userWordHashMap.get(testWords.get(correctID).getId()));
+        }
+        if (currentID + startID < endID) {
+            currentID++;
+            updateView();
+        } else {
+            Intent intent2 = new Intent(SpellingReviewActivity.this, SummaryActivity.class);
+            setResult(0, intent2);
+            finish();
+        }
+        editText.setText("");
+        editText.setTextColor(getResources().getColor(R.color.black));
     }
 }

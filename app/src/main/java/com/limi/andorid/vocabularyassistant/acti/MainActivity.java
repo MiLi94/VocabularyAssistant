@@ -1,8 +1,12 @@
 package com.limi.andorid.vocabularyassistant.acti;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -26,6 +29,7 @@ import com.limi.andorid.vocabularyassistant.data.UserAccount;
 import com.limi.andorid.vocabularyassistant.data.UserWord;
 import com.limi.andorid.vocabularyassistant.data.Word;
 import com.limi.andorid.vocabularyassistant.helper.MySQLiteHandler;
+import com.limi.andorid.vocabularyassistant.helper.SessionManager;
 import com.limi.andorid.vocabularyassistant.helper.WordImportHandler;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
@@ -44,9 +48,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
@@ -55,12 +61,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public static int wordEndID;
     public static int bookID;
     public static ArrayList<Record> records = new ArrayList<>();
+    public static LinkedHashMap<String, String> notificationEntries = new LinkedHashMap<>();
     String titles[] = {"Home", "My Notebook", "Learning Trace", "Message", "Top Five Ranking", "Settings"};
-    int icon[] = {R.mipmap.icon_home, R.mipmap.icon_notebook, R.mipmap.icon_record2, R.mipmap.icon_message, R.mipmap.icon_forum, R.mipmap.icon_settings};
+    int icon[] = {R.mipmap.icon_home, R.mipmap.icon_notebook, R.mipmap.icon_record2, R.mipmap.icon_message, R.mipmap.icon_top, R.mipmap.icon_settings};
     ResideMenuItem item[] = new ResideMenuItem[titles.length];
     private ResideMenu resideMenu;
     private MySQLiteHandler db;
-    private Bundle SsavedInstanceState = null;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,50 +80,63 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 //        Button favBtn = (Button) findViewById(R.id.title_bar_right_menu);
         menuBtn.setOnClickListener(this);
 //        favBtn.setOnClickListener(this);
-        try {
-            InputStream inputStream1 = getAssets().open("threek.xml");
-            WordImportHandler.getDataFromXml(inputStream1, "GRE threek Words");
-            inputStream1.close();
+        if (WordImportHandler.systemWordBaseArrayList.size() == 0) {
+            try {
+                InputStream inputStream1 = getAssets().open("threek.xml");
+                WordImportHandler.getDataFromXml(inputStream1, "GRE threek Words");
+                inputStream1.close();
 
-            InputStream inputStream2 = getAssets().open("toefl.xml");
-            WordImportHandler.getDataFromXml(inputStream2, "TOEFL");
-            inputStream2.close();
+                InputStream inputStream2 = getAssets().open("toefl.xml");
+                WordImportHandler.getDataFromXml(inputStream2, "TOEFL");
+                inputStream2.close();
 
-            Toast.makeText(getApplicationContext(), WordImportHandler.systemWordBaseArrayList.get(Word.getLastID() - 1).toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), WordImportHandler.systemWordBaseArrayList.get(Word.getLastID() - 1).toString(), Toast.LENGTH_LONG).show();
 
-            InputStream inputStream3 = getAssets().open("ietls.xml");
-            WordImportHandler.getDataFromXml(inputStream3, "IETLS");
-            inputStream3.close();
-            Word.setLastID();
+                InputStream inputStream3 = getAssets().open("ietls.xml");
+                WordImportHandler.getDataFromXml(inputStream3, "IETLS");
+                inputStream3.close();
+                Word.setLastID();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-
         ArrayList<Word> words = WordImportHandler.systemWordBaseArrayList;
+        db = new MySQLiteHandler(getApplicationContext());
+        sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> userDetails = db.getUserDetails();
+        currentUserID = Integer.parseInt(userDetails.get("userID"));
 
+        bookID = Integer.parseInt(sessionManager.getBook(currentUserID));
         switch (bookID) {
 
             case 0:
                 wordStartID = 0;
                 wordEndID = Word.idWordBase.get("GRE threek Words") - 1;
+                Log.d("in case 0", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "wordEndID" + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
                 break;
             case 1:
                 wordStartID = Word.idWordBase.get("GRE threek Words");
                 wordEndID = Word.idWordBase.get("TOEFL") - 1;
+                Log.d("in case 1", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "wordEndID" + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
                 break;
             case 2:
                 wordStartID = Word.idWordBase.get("TOEFL");
                 wordEndID = Word.idWordBase.get("IETLS") - 1;
+                Log.d("in case 2", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "In 2 " + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
+
+//                Toast.makeText(getApplicationContext(),"wordEndID"+String.valueOf(wordEndID),Toast.LENGTH_LONG).show();
                 break;
         }
 
         Log.d("Start ID", String.valueOf(wordStartID));
         Log.d("End ID", String.valueOf(wordEndID));
-        db = new MySQLiteHandler(getApplicationContext());
-        HashMap<String, String> userDetails = db.getUserDetails();
-        currentUserID = Integer.parseInt(userDetails.get("userID"));
+//        Toast.makeText(getApplicationContext(), "wordEndID" + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
+
 
 //       int frequency= db.getFrequency("2016-05-12",1);
 //       MySQLiteHandler database = new MySQLiteHandler(getApplicationContext());
@@ -125,7 +145,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
 
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.mipmap.menu_background);
+        resideMenu.setBackground(R.mipmap.background);
         resideMenu.attachToActivity(this);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 
@@ -140,12 +160,55 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         getTop5();
         if (savedInstanceState == null)
             changeFragment(new HomeFragment());
-        else {
-            SsavedInstanceState = savedInstanceState;
+
+
+        setNotification(true);
+        String id;
+        try {
+            Intent intent = getIntent();
+            id = intent.getStringExtra("id");
+            if (id.equals(0)) {
+                changeFragment(new NotificationFragment());
+            }
+
+        } catch (Exception e) {
+
         }
 
+    }
 
-//        updateToDatabase();
+    public void setNotification(boolean b) {
+        int mMinute = 0;
+        int mHour = 9;
+        int DAY = 60 * 60 * 24 * 1000;
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+        long firstTime = SystemClock.elapsedRealtime();
+        long systemTime = System.currentTimeMillis();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        calendar.set(Calendar.MINUTE, mMinute);
+        calendar.set(Calendar.HOUR_OF_DAY, mHour);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+//        long selectTime = calendar.getTimeInMillis();
+//        if (systemTime > selectTime) {
+//
+//            calendar.add(Calendar.DAY_OF_MONTH, 1);
+//            selectTime = calendar.getTimeInMillis();
+//        }
+        long time = 15 * 1000;
+        firstTime += time;
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime, DAY, sender);
+//        Log.i("Notification", "time ==== " + time + ", selectTime ===== "
+//                + selectTime + ", systemTime ==== " + systemTime + ", firstTime === " + firstTime);
+
+
     }
 
     private ArrayList<Record> getTopFive() {
@@ -260,13 +323,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 
@@ -276,8 +339,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Update", "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -322,13 +385,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 //                changeFragment(new HomeFragment());
@@ -338,8 +401,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Download", "Download Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -383,7 +446,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (v == item[3]) {
             TextView textView = (TextView) findViewById(R.id.title_main);
             textView.setText("Message");
-            changeFragment(new SettingFragment());
+            changeFragment(new NotificationFragment());
             resideMenu.closeMenu();
         }
         if (v == item[4]) {
@@ -458,14 +521,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
                     }
 //                    finishaaa();
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 
@@ -475,8 +538,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Update", "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
         };
@@ -501,8 +564,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Update", "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -563,14 +626,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
                     }
 //                    finishaaa();
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -579,8 +642,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GET USER", "GET USER Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -590,6 +653,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         AppController.getInstance().addToRequestQueue(strReq, "GETUSER");
 
     }
+
 
     public ResideMenu getResideMenu() {
         return resideMenu;
@@ -604,4 +668,29 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 .commit();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        switch (bookID) {
+            case 0:
+                wordStartID = 0;
+                wordEndID = Word.idWordBase.get("GRE threek Words") - 1;
+                Log.d("in case 0", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "wordEndID" + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                wordStartID = Word.idWordBase.get("GRE threek Words");
+                wordEndID = Word.idWordBase.get("TOEFL") - 1;
+                Log.d("in case 1", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "wordEndID" + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
+                break;
+            case 2:
+                wordStartID = Word.idWordBase.get("TOEFL");
+                wordEndID = Word.idWordBase.get("IETLS") - 1;
+                Log.d("in case 2", String.valueOf(wordStartID));
+//                Toast.makeText(getApplicationContext(), "In 2 " + String.valueOf(wordEndID), Toast.LENGTH_LONG).show();
+                break;
+        }
+
+    }
 }
