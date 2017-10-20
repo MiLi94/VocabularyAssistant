@@ -1,2 +1,2 @@
 # VocabularyAssistant
-CSE208 Group15 Vocabulary Assistant
+Android Project Vocabulary Assistant
